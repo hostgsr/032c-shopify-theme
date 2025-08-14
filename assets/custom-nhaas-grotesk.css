@@ -1,0 +1,47 @@
+/* Custom NHaas Grotesk Font Implementation */
+/* Only 500 (Medium) and 700 (Bold) weights, no italics */
+
+/* NHaas Grotesk TX Pro Medium - 500 weight */
+@font-face {
+  font-family: 'NHaas Grotesk';
+  src: url('./NHaasGroteskTXPro-65Md.woff2') format('woff2'),
+       url('./NHaasGroteskTXPro-65Md.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* NHaas Grotesk TX Pro Bold - 700 weight */
+@font-face {
+  font-family: 'NHaas Grotesk';
+  src: url('./NHaasGroteskTXPro-75Bd.woff2') format('woff2'),
+       url('./NHaasGroteskTXPro-75Bd.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Override theme font variables */
+:root {
+  --font-body-family: 'NHaas Grotesk' !important;
+  --font-heading-family: 'NHaas Grotesk' !important;
+  --font-body-weight: 500 !important;
+  --font-heading-weight: 500 !important;
+  --font-body-weight-bold: 700 !important;
+}
+
+/* Global font application with 500 weight default */
+* {
+  font-family: 'NHaas Grotesk' !important;
+  font-weight: 500 !important;
+}
+
+/* Ensure all text elements use the custom font */
+body, html,
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, li, td, th, label,
+button, input, textarea, select,
+.btn, .button {
+  font-family: 'NHaas Grotesk' !important;
+  font-weight: 500 !important;
+} 

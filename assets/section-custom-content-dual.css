@@ -1,0 +1,346 @@
+.custom-dual {
+  position: relative;
+  width: 100%;
+}
+
+.custom-dual__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+  min-height: inherit;
+}
+
+.custom-dual__container--stacked {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.custom-dual__column {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.custom-dual__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.custom-dual__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-dual__text-wrapper {
+  width: 100%;
+}
+
+/* Content positioning for each column */
+.custom-dual__column--content-position-top-left .custom-dual__content {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.custom-dual__column--content-position-top-center .custom-dual__content {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.custom-dual__column--content-position-top-right .custom-dual__content {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.custom-dual__column--content-position-middle-left .custom-dual__content {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.custom-dual__column--content-position-middle-center .custom-dual__content {
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-dual__column--content-position-middle-right .custom-dual__content {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.custom-dual__column--content-position-bottom-left .custom-dual__content {
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.custom-dual__column--content-position-bottom-center .custom-dual__content {
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.custom-dual__column--content-position-bottom-right .custom-dual__content {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* Content alignment */
+.custom-dual__column--content-align-left .custom-dual__text-wrapper {
+  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.custom-dual__column--content-align-center .custom-dual__text-wrapper {
+  text-align: center;
+}
+
+.custom-dual__column--content-align-right .custom-dual__text-wrapper {
+  text-align: right;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Clickable section styles */
+.custom-dual__column--clickable {
+  cursor: pointer;
+}
+
+/* Heading styles */
+.custom-dual__heading {
+  line-height: 1.2;
+}
+
+/* Dotted underline heading styles */
+.custom-dual__heading--underlined {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-dual__heading--underlined::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0,
+    currentColor 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* Ensure alignment for underlined headings */
+.custom-dual__column--content-align-left .custom-dual__heading--underlined::after {
+  left: 0;
+  right: auto;
+  width: 100%;
+}
+
+.custom-dual__column--content-align-center .custom-dual__heading--underlined {
+  text-align: center;
+}
+
+.custom-dual__column--content-align-center .custom-dual__heading--underlined::after {
+  left: 0;
+  right: 0;
+}
+
+.custom-dual__column--content-align-right .custom-dual__heading--underlined::after {
+  left: auto;
+  right: 0;
+  width: 100%;
+}
+
+/* Text styles */
+.custom-dual__text {
+  margin-bottom: 1rem;
+}
+
+.custom-dual__text p {
+  margin-bottom: 1rem;
+}
+
+/* Button styles */
+.custom-dual__button {
+  margin-top: 1.6rem;
+}
+
+/* Button styles - ensure always 100% opacity */
+.custom-dual__button .button {
+  opacity: 1 !important;
+}
+
+.custom-dual__button .button:hover {
+  opacity: 1 !important;
+}
+
+/* Mobile responsive design */
+@media screen and (max-width: 749px) {
+  .custom-dual__container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .custom-dual__text-wrapper {
+    max-width: none;
+    padding: 1.5rem;
+  }
+
+  .custom-dual__column--content-align-left .custom-dual__text-wrapper,
+  .custom-dual__column--content-align-right .custom-dual__text-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .custom-dual__heading {
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+  }
+
+  .custom-dual__text {
+    margin-bottom: 1.8rem;
+  }
+
+  .custom-dual__button {
+    margin-top: 1.8rem;
+  }
+}
+
+/* Responsive height adjustments */
+@media screen and (max-width: 749px) {
+  .custom-dual--small {
+    min-height: 500px; /* 250px per column */
+  }
+
+  .custom-dual--medium {
+    min-height: 800px; /* 400px per column */
+  }
+
+  .custom-dual--large {
+    min-height: 1000px; /* 500px per column */
+  }
+
+  .custom-dual--full {
+    min-height: 100vh;
+  }
+}
+
+/* Desktop specific layout for side-by-side that stacks on mobile */
+@media screen and (max-width: 749px) {
+  .custom-dual--layout-stacked .custom-dual__container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+/* Ensure proper stacking context */
+.custom-dual * {
+  position: relative;
+}
+
+.custom-dual__media img {
+  position: absolute;
+}
+
+/* Grid gap for better spacing */
+.custom-dual__container {
+  gap: 0;
+}
+
+/* Equal height columns */
+.custom-dual__column {
+  min-height: 100%;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .custom-dual * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* Remove any image/content scaling or zooming */
+.custom-dual__media img,
+.custom-dual__content,
+.custom-dual__text-wrapper,
+.custom-dual__column {
+  transform: none !important;
+  transition: none !important;
+} 
+
+/* Image behavior styles */
+.custom-dual__media--stretch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.custom-dual__media--stretch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-dual__media--center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 0;
+}
+
+.custom-dual__media--center img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Content layout styles */
+.custom-dual__content--layout-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: 100%;
+}
+
+.custom-dual__content--layout-between .custom-dual__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.custom-dual__content--layout-between .custom-dual__heading {
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+.custom-dual__content--layout-between .custom-dual__text-content {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+
+.custom-dual__content--layout-between .custom-dual__text {
+  margin-bottom: 1.6rem;
+}
+
+.custom-dual__content--layout-between .custom-dual__button {
+  margin-top: auto;
+  padding-top: 1.6rem;
+} 

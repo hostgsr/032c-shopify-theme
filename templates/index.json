@@ -1,0 +1,98 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_content_hero_9mdWPb": {
+      "type": "custom-content-hero",
+      "name": "Custom Content Hero",
+      "settings": {
+        "heading": "Custom Content Section",
+        "heading_size": "h1",
+        "text": "<p>Add your custom content here. This can include multiple paragraphs and formatted text.</p>",
+        "text_style": "body",
+        "button_label": "Learn More",
+        "button_link": "",
+        "button_style_secondary": false,
+        "section_link": "",
+        "underline_heading": false,
+        "image_overlay_opacity": 0,
+        "image_behavior": "stretch",
+        "background_color": "",
+        "text_color": "#121212",
+        "button_background_color": "",
+        "button_text_color": "",
+        "button_hover_background_color": "#121212",
+        "button_hover_text_color": "#ffffff",
+        "height": "medium",
+        "content_position": "middle-left",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "content_layout": "between",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "custom_content_dual_4JcRxY": {
+      "type": "custom-content-dual",
+      "name": "Custom Content Dual",
+      "settings": {
+        "layout": "side-by-side",
+        "height": "medium",
+        "heading_left": "Left Column Heading",
+        "heading_size_left": "h1",
+        "text_left": "<p>Add your content for the left column here.</p>",
+        "text_style_left": "body",
+        "button_label_left": "Learn More",
+        "button_link_left": "",
+        "button_style_secondary_left": false,
+        "section_link_left": "",
+        "underline_heading_left": false,
+        "image_overlay_opacity_left": 0,
+        "image_behavior_left": "stretch",
+        "background_color_left": "",
+        "text_color_left": "",
+        "content_position_left": "middle-center",
+        "content_alignment_left": "left",
+        "content_layout_left": "between",
+        "heading_right": "",
+        "heading_size_right": "h1",
+        "text_right": "",
+        "text_style_right": "body",
+        "button_label_right": "",
+        "button_link_right": "",
+        "button_style_secondary_right": false,
+        "section_link_right": "",
+        "underline_heading_right": false,
+        "image_right": "shopify://shop_images/A1_06968.jpg",
+        "image_overlay_opacity_right": 0,
+        "image_behavior_right": "stretch",
+        "background_color_right": "",
+        "text_color_right": "#121212",
+        "content_position_right": "middle-center",
+        "content_alignment_right": "center",
+        "content_layout_right": "normal",
+        "padding_top": 0,
+        "padding_bottom": 16,
+        "button_background_color_left": "",
+        "button_text_color_left": "",
+        "button_hover_background_color_left": "#121212",
+        "button_hover_text_color_left": "#ffffff",
+        "button_background_color_right": "",
+        "button_text_color_right": "",
+        "button_hover_background_color_right": "",
+        "button_hover_text_color_right": ""
+      }
+    }
+  },
+  "order": [
+    "custom_content_hero_9mdWPb",
+    "custom_content_dual_4JcRxY"
+  ]
+}

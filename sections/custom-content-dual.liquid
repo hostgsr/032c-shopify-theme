@@ -1,0 +1,849 @@
+{{ 'section-custom-content-dual.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #CustomDual-{{ section.id }} .custom-dual__column--left {
+    {%- if section.settings.background_color_left != blank -%}
+      background-color: {{ section.settings.background_color_left }};
+    {%- endif -%}
+    {%- if section.settings.text_color_left != blank -%}
+      color: {{ section.settings.text_color_left }};
+    {%- endif -%}
+  }
+
+  #CustomDual-{{ section.id }} .custom-dual__column--right {
+    {%- if section.settings.background_color_right != blank -%}
+      background-color: {{ section.settings.background_color_right }};
+    {%- endif -%}
+    {%- if section.settings.text_color_right != blank -%}
+      color: {{ section.settings.text_color_right }};
+    {%- endif -%}
+  }
+
+  #CustomDual-{{ section.id }} .custom-dual__column--left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, {{ section.settings.image_overlay_opacity_left | divided_by: 100.0 }});
+    z-index: 1;
+  }
+
+  #CustomDual-{{ section.id }} .custom-dual__column--right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, {{ section.settings.image_overlay_opacity_right | divided_by: 100.0 }});
+    z-index: 1;
+  }
+
+  {%- if section.settings.text_color_left != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--left .custom-dual__heading,
+    #CustomDual-{{ section.id }} .custom-dual__column--left .custom-dual__text,
+    #CustomDual-{{ section.id }} .custom-dual__column--left .custom-dual__text p {
+      color: {{ section.settings.text_color_left }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.text_color_right != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--right .custom-dual__heading,
+    #CustomDual-{{ section.id }} .custom-dual__column--right .custom-dual__text,
+    #CustomDual-{{ section.id }} .custom-dual__column--right .custom-dual__text p {
+      color: {{ section.settings.text_color_right }};
+    }
+  {%- endif -%}
+
+  /* Left column button styles */
+  {%- if section.settings.button_background_color_left != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--left .button {
+      background-color: {{ section.settings.button_background_color_left }};
+      border-color: {{ section.settings.button_background_color_left }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_text_color_left != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--left .button {
+      color: {{ section.settings.button_text_color_left }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_background_color_left != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--left .button:hover {
+      background-color: {{ section.settings.button_hover_background_color_left }};
+      border-color: {{ section.settings.button_hover_background_color_left }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_text_color_left != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--left .button:hover {
+      color: {{ section.settings.button_hover_text_color_left }};
+    }
+  {%- endif -%}
+
+  /* Right column button styles */
+  {%- if section.settings.button_background_color_right != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--right .button {
+      background-color: {{ section.settings.button_background_color_right }};
+      border-color: {{ section.settings.button_background_color_right }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_text_color_right != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--right .button {
+      color: {{ section.settings.button_text_color_right }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_background_color_right != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--right .button:hover {
+      background-color: {{ section.settings.button_hover_background_color_right }};
+      border-color: {{ section.settings.button_hover_background_color_right }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_text_color_right != blank -%}
+    #CustomDual-{{ section.id }} .custom-dual__column--right .button:hover {
+      color: {{ section.settings.button_hover_text_color_right }};
+    }
+  {%- endif -%}
+
+  #CustomDual-{{ section.id }} {
+    {%- if section.settings.height == 'small' -%}
+      min-height: 300px;
+    {%- elsif section.settings.height == 'medium' -%}
+      min-height: 500px;
+    {%- elsif section.settings.height == 'large' -%}
+      min-height: 700px;
+    {%- elsif section.settings.height == 'full' -%}
+      min-height: 100vh;
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+-%}
+
+<div
+  id="CustomDual-{{ section.id }}"
+  class="custom-dual custom-dual--{{ section.settings.height }} custom-dual--layout-{{ section.settings.layout }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+>
+  <div class="custom-dual__container{% if section.settings.layout == 'stacked' %} custom-dual__container--stacked{% endif %}">
+    
+    <!-- Left Column -->
+    <div class="custom-dual__column custom-dual__column--left custom-dual__column--content-align-{{ section.settings.content_alignment_left }} custom-dual__column--content-position-{{ section.settings.content_position_left }}{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} custom-dual__column--clickable{% endif %}"{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} onclick="window.location.href='{{ section.settings.section_link_left }}'"{% endif %}>
+      {%- if section.settings.image_left != blank -%}
+        <div class="custom-dual__media custom-dual__media--{{ section.settings.image_behavior_left }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+          {{
+            section.settings.image_left
+            | image_url: width: 1920
+            | image_tag:
+              sizes: '50vw',
+              widths: '375, 550, 750, 1100, 1500, 1920',
+              fetchpriority: fetch_priority
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="custom-dual__content{% if section.settings.content_layout_left == 'between' %} custom-dual__content--layout-between{% endif %} section-{{ section.id }}-padding">
+        <div class="custom-dual__text-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if section.settings.heading_left != blank -%}
+            <h2 class="custom-dual__heading inline-richtext {{ section.settings.heading_size_left }}{% if section.settings.underline_heading_left %} custom-dual__heading--underlined{% endif %}">
+              {{ section.settings.heading_left }}
+            </h2>
+          {%- endif -%}
+          
+          {%- if section.settings.content_layout_left == 'between' -%}
+            <div class="custom-dual__text-content">
+          {%- endif -%}
+          
+          {%- if section.settings.text_left != blank -%}
+            <div class="custom-dual__text rte {{ section.settings.text_style_left }}">
+              {{ section.settings.text_left }}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.button_label_left != blank -%}
+            <div class="custom-dual__button">
+              <a
+                {% if section.settings.button_link_left == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ section.settings.button_link_left }}"
+                {% endif %}
+                class="button{% if section.settings.button_style_secondary_left %} button--secondary{% else %} button--primary{% endif %}"
+              >
+                {{ section.settings.button_label_left | escape }}
+              </a>
+            </div>
+          {%- endif -%}
+          
+          {%- if section.settings.content_layout_left == 'between' -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="custom-dual__column custom-dual__column--right custom-dual__column--content-align-{{ section.settings.content_alignment_right }} custom-dual__column--content-position-{{ section.settings.content_position_right }}{% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %} custom-dual__column--clickable{% endif %}"{% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %} onclick="window.location.href='{{ section.settings.section_link_right }}'"{% endif %}>
+      {%- if section.settings.image_right != blank -%}
+        <div class="custom-dual__media custom-dual__media--{{ section.settings.image_behavior_right }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+          {{
+            section.settings.image_right
+            | image_url: width: 1920
+            | image_tag:
+              sizes: '50vw',
+              widths: '375, 550, 750, 1100, 1500, 1920',
+              fetchpriority: fetch_priority
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="custom-dual__content{% if section.settings.content_layout_right == 'between' %} custom-dual__content--layout-between{% endif %} section-{{ section.id }}-padding">
+        <div class="custom-dual__text-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if section.settings.heading_right != blank -%}
+            <h2 class="custom-dual__heading inline-richtext {{ section.settings.heading_size_right }}{% if section.settings.underline_heading_right %} custom-dual__heading--underlined{% endif %}">
+              {{ section.settings.heading_right }}
+            </h2>
+          {%- endif -%}
+          
+          {%- if section.settings.content_layout_right == 'between' -%}
+            <div class="custom-dual__text-content">
+          {%- endif -%}
+          
+          {%- if section.settings.text_right != blank -%}
+            <div class="custom-dual__text rte {{ section.settings.text_style_right }}">
+              {{ section.settings.text_right }}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.button_label_right != blank -%}
+            <div class="custom-dual__button">
+              <a
+                {% if section.settings.button_link_right == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ section.settings.button_link_right }}"
+                {% endif %}
+                class="button{% if section.settings.button_style_secondary_right %} button--secondary{% else %} button--primary{% endif %}"
+              >
+                {{ section.settings.button_label_right | escape }}
+              </a>
+            </div>
+          {%- endif -%}
+          
+          {%- if section.settings.content_layout_right == 'between' -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Content Dual",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "side-by-side",
+          "label": "Side by side"
+        },
+        {
+          "value": "stacked",
+          "label": "Stacked on mobile"
+        }
+      ],
+      "default": "side-by-side",
+      "label": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full screen"
+        }
+      ],
+      "default": "medium",
+      "label": "Section height"
+    },
+    {
+      "type": "header",
+      "content": "Left Column - Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading_left",
+      "default": "Left Column Heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size_left",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "richtext",
+      "id": "text_left",
+      "default": "<p>Add your content for the left column here.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_style_left",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "value": "caption-with-letter-spacing",
+          "label": "Caption with letter spacing"
+        }
+      ],
+      "default": "body",
+      "label": "Text style"
+    },
+    {
+      "type": "text",
+      "id": "button_label_left",
+      "default": "Learn More",
+      "label": "Button label",
+      "info": "Leave empty to hide button"
+    },
+    {
+      "type": "url",
+      "id": "button_link_left",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary_left",
+      "default": false,
+      "label": "Use outline button style"
+    },
+    {
+      "type": "url",
+      "id": "section_link_left",
+      "label": "Section link",
+      "info": "Makes entire left column clickable when no button is present"
+    },
+    {
+      "type": "checkbox",
+      "id": "underline_heading_left",
+      "default": false,
+      "label": "Underline heading with dots"
+    },
+    {
+      "type": "header",
+      "content": "Left Column - Image & Colors"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity_left",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_behavior_left",
+      "options": [
+        {
+          "value": "stretch",
+          "label": "Stretch (Full overlay)"
+        },
+        {
+          "value": "center",
+          "label": "Center (With padding)"
+        }
+      ],
+      "default": "stretch",
+      "label": "Image behavior"
+    },
+    {
+      "type": "color",
+      "id": "background_color_left",
+      "label": "Background color",
+      "info": "Used when no image is selected"
+    },
+    {
+      "type": "color",
+      "id": "text_color_left",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Left Column - Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_position_left",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "middle-left",
+          "label": "Middle left"
+        },
+        {
+          "value": "middle-center",
+          "label": "Middle center"
+        },
+        {
+          "value": "middle-right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "middle-center",
+      "label": "Content position"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment_left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "select",
+      "id": "content_layout_left",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "between",
+          "label": "Space between (Headline top, text/button bottom)"
+        }
+      ],
+      "default": "normal",
+      "label": "Content layout"
+    },
+    {
+      "type": "header",
+      "content": "Right Column - Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading_right",
+      "default": "Right Column Heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size_right",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "richtext",
+      "id": "text_right",
+      "default": "<p>Add your content for the right column here.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_style_right",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "value": "caption-with-letter-spacing",
+          "label": "Caption with letter spacing"
+        }
+      ],
+      "default": "body",
+      "label": "Text style"
+    },
+    {
+      "type": "text",
+      "id": "button_label_right",
+      "default": "Learn More",
+      "label": "Button label",
+      "info": "Leave empty to hide button"
+    },
+    {
+      "type": "url",
+      "id": "button_link_right",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary_right",
+      "default": false,
+      "label": "Use outline button style"
+    },
+    {
+      "type": "url",
+      "id": "section_link_right",
+      "label": "Section link",
+      "info": "Makes entire right column clickable when no button is present"
+    },
+    {
+      "type": "checkbox",
+      "id": "underline_heading_right",
+      "default": false,
+      "label": "Underline heading with dots"
+    },
+    {
+      "type": "header",
+      "content": "Right Column - Image & Colors"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity_right",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_behavior_right",
+      "options": [
+        {
+          "value": "stretch",
+          "label": "Stretch (Full overlay)"
+        },
+        {
+          "value": "center",
+          "label": "Center (With padding)"
+        }
+      ],
+      "default": "stretch",
+      "label": "Image behavior"
+    },
+    {
+      "type": "color",
+      "id": "background_color_right",
+      "label": "Background color",
+      "info": "Used when no image is selected"
+    },
+    {
+      "type": "color",
+      "id": "text_color_right",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Right Column - Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_position_right",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "middle-left",
+          "label": "Middle left"
+        },
+        {
+          "value": "middle-center",
+          "label": "Middle center"
+        },
+        {
+          "value": "middle-right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "middle-center",
+      "label": "Content position"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment_right",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "select",
+      "id": "content_layout_right",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "between",
+          "label": "Space between (Headline top, text/button bottom)"
+        }
+      ],
+      "default": "normal",
+      "label": "Content layout"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color_left",
+      "label": "Button background color (Left)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color_left",
+      "label": "Button text color (Left)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color_left",
+      "label": "Button hover background color (Left)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color_left",
+      "label": "Button hover text color (Left)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color_right",
+      "label": "Button background color (Right)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color_right",
+      "label": "Button text color (Right)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color_right",
+      "label": "Button hover background color (Right)",
+      "info": "Leave blank for default"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color_right",
+      "label": "Button hover text color (Right)",
+      "info": "Leave blank for default"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Content Dual"
+    }
+  ]
+}
+{% endschema %} 

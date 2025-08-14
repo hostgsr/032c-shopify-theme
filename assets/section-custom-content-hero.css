@@ -1,0 +1,327 @@
+.custom-hero {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.custom-hero__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.custom-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-hero__text-wrapper {
+  width: 100%;
+}
+
+/* Content positioning */
+.custom-hero--content-position-top-left .custom-hero__content {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.custom-hero--content-position-top-center .custom-hero__content {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.custom-hero--content-position-top-right .custom-hero__content {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.custom-hero--content-position-middle-left .custom-hero__content {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.custom-hero--content-position-middle-center .custom-hero__content {
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-hero--content-position-middle-right .custom-hero__content {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.custom-hero--content-position-bottom-left .custom-hero__content {
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.custom-hero--content-position-bottom-center .custom-hero__content {
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.custom-hero--content-position-bottom-right .custom-hero__content {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* Content alignment */
+.custom-hero--content-align-left .custom-hero__text-wrapper {
+  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.custom-hero--content-align-center .custom-hero__text-wrapper {
+  text-align: center;
+}
+
+.custom-hero--content-align-right .custom-hero__text-wrapper {
+  text-align: right;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Clickable section styles */
+.custom-hero--clickable {
+  cursor: pointer;
+}
+
+/* Heading styles */
+.custom-hero__heading {
+  line-height: 1.2;
+}
+
+/* Dotted underline heading styles */
+.custom-hero__heading--underlined {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-hero__heading--underlined::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0,
+    currentColor 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* Ensure alignment for underlined headings */
+.custom-hero--content-align-left .custom-hero__heading--underlined::after {
+  left: 0;
+  right: auto;
+  width: 100%;
+}
+
+.custom-hero--content-align-center .custom-hero__heading--underlined {
+  text-align: center;
+}
+
+.custom-hero--content-align-center .custom-hero__heading--underlined::after {
+  left: 0;
+  right: 0;
+}
+
+.custom-hero--content-align-right .custom-hero__heading--underlined::after {
+  left: auto;
+  right: 0;
+  width: 100%;
+}
+
+/* Text styles */
+.custom-hero__text {
+  margin-bottom: 1rem;
+}
+
+.custom-hero__text p {
+  margin-bottom: 1rem;
+}
+
+/* Button styles */
+.custom-hero__button {
+  margin-top: 1.6rem;
+}
+
+/* Button styles - ensure always 100% opacity */
+.custom-hero__button .button {
+  opacity: 1 !important;
+}
+
+.custom-hero__button .button:hover {
+  opacity: 1 !important;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 749px) {
+  .custom-hero--content-align-mobile-left .custom-hero__text-wrapper {
+    text-align: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .custom-hero--content-align-mobile-center .custom-hero__text-wrapper {
+    text-align: center;
+  }
+
+  .custom-hero--content-align-mobile-right .custom-hero__text-wrapper {
+    text-align: right;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .custom-hero__text-wrapper {
+    max-width: none;
+  }
+
+  .custom-hero__heading {
+    margin-bottom: 0;
+  }
+
+  .custom-hero__text {
+    margin-bottom: 0;
+  }
+
+  .custom-hero__button {
+    margin-top: 0;
+  }
+}
+
+/* Responsive height adjustments */
+@media screen and (max-width: 749px) {
+  .custom-hero--small {
+    min-height: 250px;
+  }
+
+  .custom-hero--medium {
+    min-height: 400px;
+  }
+
+  .custom-hero--large {
+    min-height: 500px;
+  }
+
+  .custom-hero--full {
+    min-height: 100vh;
+  }
+}
+
+/* Ensure proper stacking context */
+.custom-hero * {
+  position: relative;
+}
+
+.custom-hero__media img {
+  position: absolute;
+}
+
+/* Remove any image/content scaling or zooming */
+.custom-hero__media img,
+.custom-hero__content,
+.custom-hero__text-wrapper {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .custom-hero * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+} 
+
+/* Image behavior styles */
+.custom-hero__media--stretch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.custom-hero__media--stretch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-hero__media--center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 0;
+}
+
+.custom-hero__media--center img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Content layout styles */
+.custom-hero__content--layout-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+  min-height: inherit;
+}
+
+.custom-hero__content--layout-between .w-full {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.custom-hero__content--layout-between .custom-hero__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.custom-hero__content--layout-between .custom-hero__heading {
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.custom-hero__content--layout-between .custom-hero__text-content {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  justify-content: flex-end;
+}
+
+.custom-hero__content--layout-between .custom-hero__text {
+  margin-bottom: 1rem;
+}
+
+.custom-hero__content--layout-between .custom-hero__button {
+  margin-top: 1.6rem;
+} 

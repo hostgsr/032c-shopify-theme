@@ -1,0 +1,494 @@
+{{ 'section-custom-content-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #CustomHero-{{ section.id }} {
+    {%- if section.settings.background_color != blank -%}
+      background-color: {{ section.settings.background_color }};
+    {%- endif -%}
+    {%- if section.settings.text_color != blank -%}
+      color: {{ section.settings.text_color }};
+    {%- endif -%}
+    position: relative;
+    {%- if section.settings.height == 'small' -%}
+      min-height: 300px;
+    {%- elsif section.settings.height == 'medium' -%}
+      min-height: 500px;
+    {%- elsif section.settings.height == 'large' -%}
+      min-height: 700px;
+    {%- elsif section.settings.height == 'full' -%}
+      min-height: 100vh;
+    {%- endif -%}
+  }
+
+  #CustomHero-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, {{ section.settings.image_overlay_opacity | divided_by: 100.0 }});
+    z-index: 1;
+  }
+
+  #CustomHero-{{ section.id }} .custom-hero__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  {%- if section.settings.text_color != blank -%}
+    #CustomHero-{{ section.id }} .custom-hero__heading,
+    #CustomHero-{{ section.id }} .custom-hero__text,
+    #CustomHero-{{ section.id }} .custom-hero__text p {
+      color: {{ section.settings.text_color }};
+    }
+  {%- endif -%}
+
+  /* Button styles */
+  {%- if section.settings.button_background_color != blank -%}
+    #CustomHero-{{ section.id }} .button {
+      background-color: {{ section.settings.button_background_color }};
+      border-color: {{ section.settings.button_background_color }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_text_color != blank -%}
+    #CustomHero-{{ section.id }} .button {
+      color: {{ section.settings.button_text_color }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_background_color != blank -%}
+    #CustomHero-{{ section.id }} .button:hover {
+      background-color: {{ section.settings.button_hover_background_color }};
+      border-color: {{ section.settings.button_hover_background_color }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.button_hover_text_color != blank -%}
+    #CustomHero-{{ section.id }} .button:hover {
+      color: {{ section.settings.button_hover_text_color }};
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+-%}
+
+<div
+  id="CustomHero-{{ section.id }}"
+  class="custom-hero custom-hero--{{ section.settings.height }} custom-hero--content-align-{{ section.settings.desktop_content_alignment }} custom-hero--content-align-mobile-{{ section.settings.mobile_content_alignment }} custom-hero--content-position-{{ section.settings.content_position }}{% if section.settings.button_label == blank and section.settings.section_link != blank %} custom-hero--clickable{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"{% if section.settings.button_label == blank and section.settings.section_link != blank %} onclick="window.location.href='{{ section.settings.section_link }}'"{% endif %}
+>
+  {%- if section.settings.image != blank -%}
+    <div class="custom-hero__media custom-hero__media--{{ section.settings.image_behavior }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{
+        section.settings.image
+        | image_url: width: 3840
+        | image_tag:
+          sizes: '100vw',
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+          fetchpriority: fetch_priority
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="custom-hero__content{% if section.settings.content_layout == 'between' %} custom-hero__content--layout-between{% endif %} section-{{ section.id }}-padding">
+    <div class="w-full">
+      <div class="custom-hero__text-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="custom-hero__heading inline-richtext {{ section.settings.heading_size }}{% if section.settings.underline_heading %} custom-hero__heading--underlined{% endif %}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+        
+        {%- if section.settings.content_layout == 'between' -%}
+          <div class="custom-hero__text-content">
+        {%- endif -%}
+        
+        {%- if section.settings.text != blank -%}
+          <div class="custom-hero__text rte {{ section.settings.text_style }}">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="custom-hero__button">
+            <a
+              {% if section.settings.button_link == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section.settings.button_link }}"
+              {% endif %}
+              class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+            >
+              {{ section.settings.button_label | escape }}
+            </a>
+          </div>
+        {%- endif -%}
+        
+        {%- if section.settings.content_layout == 'between' -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Content Hero",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Custom Content Section",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Add your custom content here. This can include multiple paragraphs and formatted text.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "value": "caption-with-letter-spacing",
+          "label": "Caption with letter spacing"
+        }
+      ],
+      "default": "body",
+      "label": "Text style"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Learn More",
+      "label": "Button label",
+      "info": "Leave empty to hide button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "Use outline button style"
+    },
+    {
+      "type": "url",
+      "id": "section_link",
+      "label": "Section link",
+      "info": "Makes entire section clickable when no button is present"
+    },
+    {
+      "type": "checkbox",
+      "id": "underline_heading",
+      "default": false,
+      "label": "Underline heading with dots"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_behavior",
+      "options": [
+        {
+          "value": "stretch",
+          "label": "Stretch (Full overlay)"
+        },
+        {
+          "value": "center",
+          "label": "Center (With padding)"
+        }
+      ],
+      "default": "stretch",
+      "label": "Image behavior"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "info": "Used when no image is selected"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "info": "Used when no image is selected"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Button hover background color"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text color"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full screen"
+        }
+      ],
+      "default": "medium",
+      "label": "Section height"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "middle-left",
+          "label": "Middle left"
+        },
+        {
+          "value": "middle-center",
+          "label": "Middle center"
+        },
+        {
+          "value": "middle-right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "middle-center",
+      "label": "Content position"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "content_layout",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "between",
+          "label": "Space between (Headline top, text/button bottom)"
+        }
+      ],
+      "default": "normal",
+      "label": "Content layout"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Content Hero"
+    }
+  ]
+}
+{% endschema %} 
