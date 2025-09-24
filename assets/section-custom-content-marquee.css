@@ -1,0 +1,126 @@
+.custom-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.custom-marquee__container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.custom-marquee__track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marquee-left 30s linear infinite;
+  width: max-content;
+}
+
+.custom-marquee__content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.custom-marquee__text {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.custom-marquee__separator {
+  display: inline-block;
+  margin: 0 2rem;
+  opacity: 0.7;
+  font-weight: normal;
+}
+
+/* Direction animations */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+/* Direction classes */
+.custom-marquee--direction-left .custom-marquee__track {
+  animation-name: marquee-left;
+}
+
+.custom-marquee--direction-right .custom-marquee__track {
+  animation-name: marquee-right;
+}
+
+/* Pause on hover */
+.custom-marquee:hover .custom-marquee__track {
+  animation-play-state: paused;
+}
+
+/* Don't pause when no-pause class is applied */
+.custom-marquee--no-pause:hover .custom-marquee__track {
+  animation-play-state: running;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 749px) {
+  .custom-marquee__separator {
+    margin: 0 1rem;
+  }
+  
+  .custom-marquee__text {
+    font-size: 0.9em;
+  }
+}
+
+/* Accessibility - respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .custom-marquee__track {
+    animation: none !important;
+  }
+  
+  .custom-marquee__content {
+    justify-content: center;
+  }
+  
+  .custom-marquee__text:not(:first-child),
+  .custom-marquee__separator {
+    display: none;
+  }
+}
+
+/* Ensure smooth performance */
+.custom-marquee__track {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Additional styling for better visual appeal */
+.custom-marquee__text {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Handle very long text by ensuring it doesn't break */
+.custom-marquee__content {
+  flex-shrink: 0;
+}
