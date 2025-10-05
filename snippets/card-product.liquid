@@ -267,10 +267,9 @@
                   {%- comment -%} Show direct add to cart button {%- endcomment -%}
                   <div class="quick-add-hover-single">
                     <product-form data-section-id="{{ section.id }}">
-                      {%-
-                        form 'product',
+                      {%- form 'product',
                         card_product,
-                        id: 'hover-' | append: product_form_id,
+                        id: 'hover-quick-add-{{ section_id }}-{{ card_product.id }}',
                         class: 'form hover-product-form',
                         novalidate: 'novalidate',
                         data-type: 'add-to-cart-form'
@@ -519,7 +518,7 @@
               {% endif %}
             </quick-add-bulk>
           {% else %}
-            <div class="quick-add no-js-hidden">
+            <div class="quick-add no-js-hidden" style="display: none !important;">
               {%- liquid
                 assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
                 assign qty_rules = false

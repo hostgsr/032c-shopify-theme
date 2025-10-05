@@ -10,6 +10,8 @@
 {
   "current": {
     "logo": "shopify://shop_images/logo.svg",
+    "cart_type": "drawer",
+    "cart_drawer_collection": "accessories-1",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",

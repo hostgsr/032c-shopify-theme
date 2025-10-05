@@ -9,35 +9,104 @@
  */
 {
   "sections": {
-    "custom_content_hero_9mdWPb": {
-      "type": "custom-content-hero",
-      "name": "Custom Content Hero",
+    "custom_content_slider_DbGNqV": {
+      "type": "custom-content-slider",
+      "blocks": {
+        "slide_bDW4Bj": {
+          "type": "slide",
+          "settings": {
+            "heading": "First Slide",
+            "heading_size": "h1",
+            "text": "<p>This is the first slide content.</p>",
+            "text_style": "body",
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/store",
+            "button_style_secondary": false,
+            "section_link": "#",
+            "underline_heading": false,
+            "image": "shopify://shop_images/4ed1139c9f6bb0aa73f4e9e59e18c95aedc301e9-659x811.webp",
+            "image_overlay_opacity": 0,
+            "image_behavior": "stretch",
+            "background_color": "",
+            "text_color": "#000000",
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_hover_background_color": "#000000",
+            "button_hover_text_color": "#ffffff",
+            "content_position": "bottom-left",
+            "desktop_content_alignment": "left",
+            "mobile_content_alignment": "center",
+            "content_layout": "normal"
+          }
+        },
+        "slide_J8P4Kp": {
+          "type": "slide",
+          "settings": {
+            "heading": "Second Slide",
+            "heading_size": "h1",
+            "text": "<p>This is the first slide content.</p>",
+            "text_style": "body",
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/store",
+            "button_style_secondary": false,
+            "section_link": "#",
+            "underline_heading": false,
+            "image": "shopify://shop_images/2f6fa0f791b06e389ec9542192c328f36de270a6-1440x1800.jpg",
+            "image_overlay_opacity": 0,
+            "image_behavior": "stretch",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_hover_background_color": "#ffffff",
+            "button_hover_text_color": "#121212",
+            "content_position": "bottom-left",
+            "desktop_content_alignment": "left",
+            "mobile_content_alignment": "center",
+            "content_layout": "normal"
+          }
+        },
+        "slide_PQKpBz": {
+          "type": "slide",
+          "settings": {
+            "heading": "Third Slide",
+            "heading_size": "h1",
+            "text": "<p>This is the first slide content.</p>",
+            "text_style": "body",
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/store",
+            "button_style_secondary": false,
+            "section_link": "#",
+            "underline_heading": false,
+            "image": "shopify://shop_images/4ed1139c9f6bb0aa73f4e9e59e18c95aedc301e9-659x811.webp",
+            "image_overlay_opacity": 0,
+            "image_behavior": "stretch",
+            "background_color": "",
+            "text_color": "#000000",
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_hover_background_color": "#000000",
+            "button_hover_text_color": "#ffffff",
+            "content_position": "bottom-left",
+            "desktop_content_alignment": "left",
+            "mobile_content_alignment": "center",
+            "content_layout": "normal"
+          }
+        }
+      },
+      "block_order": [
+        "slide_bDW4Bj",
+        "slide_J8P4Kp",
+        "slide_PQKpBz"
+      ],
+      "name": "Custom Content Slider",
       "settings": {
-        "heading": "THE TIGER presented by Gucci",
-        "heading_size": "h0",
-        "text": "",
-        "text_style": "body",
-        "button_label": "",
-        "button_link": "",
-        "button_style_secondary": false,
-        "section_link": "",
-        "underline_heading": false,
-        "image": "shopify://shop_images/727fbf114ad51315a8b5a0e87a3f87037d4241f4-1530x1072.webp",
-        "image_overlay_opacity": 0,
-        "image_behavior": "stretch",
-        "background_color": "#334fb4",
-        "text_color": "#ffffff",
-        "button_background_color": "",
-        "button_text_color": "",
-        "button_hover_background_color": "#121212",
-        "button_hover_text_color": "#ffffff",
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "show_arrows": true,
         "height": "medium",
-        "content_position": "middle-center",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "content_layout": "normal",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "custom_content_hero_x94Qpx": {
@@ -357,6 +426,7 @@
         "product": "032c-loves-t-shirt",
         "color_scheme": "",
         "secondary_background": false,
+        "max_images": "4",
         "media_size": "medium",
         "constrain_to_viewport": true,
         "media_fit": "contain",
@@ -367,9 +437,41 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
+    },
+    "custom_content_hero_9mdWPb": {
+      "type": "custom-content-hero",
+      "name": "Custom Content Hero",
+      "settings": {
+        "heading": "THE TIGER presented by Gucci",
+        "heading_size": "h0",
+        "text": "",
+        "text_style": "body",
+        "button_label": "",
+        "button_link": "",
+        "button_style_secondary": false,
+        "section_link": "",
+        "underline_heading": false,
+        "image": "shopify://shop_images/727fbf114ad51315a8b5a0e87a3f87037d4241f4-1530x1072.webp",
+        "image_overlay_opacity": 0,
+        "image_behavior": "stretch",
+        "background_color": "#334fb4",
+        "text_color": "#ffffff",
+        "button_background_color": "",
+        "button_text_color": "",
+        "button_hover_background_color": "#121212",
+        "button_hover_text_color": "#ffffff",
+        "height": "medium",
+        "content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_layout": "normal",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
+    "custom_content_slider_DbGNqV",
     "custom_content_hero_x94Qpx",
     "featured_collection_GE33gY",
     "custom_content_dual_4JcRxY",

@@ -1,10 +1,11 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 {{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{{ 'custom-tag-filter.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   @media screen and (max-width: 749px) {
     .collection-hero--with-image .collection-hero__inner {
-      padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
+      padding-bottom: calc({{settings.media_shadow_vertical_offset | at_least: 0}}px + 2rem);
     }
   }
 {%- endstyle -%}
@@ -20,6 +21,45 @@
       {%- if section.settings.show_collection_description -%}
         <div class="collection-hero__description rte">{{ collection.description }}</div>
       {%- endif -%}
+
+      <!-- Custom Tag Filter Button -->
+      <div class="collection-hero__filter-wrapper">
+        <button class="collection-hero__filter-button" id="customFilterButton" aria-expanded="false">
+          <span class="svg-wrapper">
+            {{- 'icon-filter.svg' | inline_asset_content -}}
+          </span>
+          <span class="filter-button-text">Filter by Tags</span>
+        </button>
+
+        <!-- Custom Tag Filter Panel -->
+        <div class="custom-tag-filter-panel" id="customTagFilterPanel" style="display: none;">
+          <div class="custom-tag-filter-content">
+            <div class="custom-tag-filter-header">
+              <h3>Filter by Tags</h3>
+              <button class="custom-tag-filter-close" id="customFilterClose" aria-label="Close filter panel">
+                <span class="svg-wrapper">
+                  {{- 'icon-close.svg' | inline_asset_content -}}
+                </span>
+              </button>
+            </div>
+            <div class="custom-tag-filter-body">
+              <div class="custom-tag-filter-selected" id="customTagFilterSelected" style="display: none;">
+                <h4>Selected Filters:</h4>
+                <div class="custom-tag-filter-selected-tags" id="customTagFilterSelectedTags">
+                  <!-- Selected tags will be populated by JavaScript -->
+                </div>
+              </div>
+              <div class="custom-tag-filter-tags" id="customTagFilterTags">
+                <!-- Tags will be populated by JavaScript -->
+              </div>
+              <div class="custom-tag-filter-actions">
+                <button class="custom-tag-filter-clear" id="customFilterClear">Clear All</button>
+                <button class="custom-tag-filter-apply" id="customFilterApply">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     {%- if section.settings.show_collection_image and collection.image -%}
