@@ -1,0 +1,78 @@
+{% comment %}
+  Renders a featured product card for cart drawer
+
+  Accepts:
+  - product: {Object} Product object
+  - media_aspect_ratio: {String} Media aspect ratio (optional)
+
+  Usage:
+  {% render 'cart-drawer-featured-product', product: product %}
+{% endcomment %}
+
+<div class="cart-drawer-featured-product">
+  <div class="cart-drawer-featured-product__media">
+    <a href="{{ product.url }}" class="cart-drawer-featured-product__link">
+      {%- if product.featured_media -%}
+        <img
+          srcset="
+            {%- if product.featured_media.width >= 165 -%}{{ product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if product.featured_media.width >= 330 -%}{{ product.featured_media | image_url: width: 330 }} 330w,{%- endif -%}
+            {{ product.featured_media | image_url }} {{ product.featured_media.width }}w
+          "
+          src="{{ product.featured_media | image_url: width: 330 }}"
+          sizes="(min-width: 750px) 165px, 165px"
+          alt="{{ product.featured_media.alt | escape }}"
+          class="cart-drawer-featured-product__image"
+          loading="lazy"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+        >
+      {%- else -%}
+        <div class="cart-drawer-featured-product__placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+
+  <div class="cart-drawer-featured-product__content">
+    <h4 class="cart-drawer-featured-product__title">
+      <a href="{{ product.url }}" class="cart-drawer-featured-product__title-link">
+        {{ product.title | escape }}
+      </a>
+    </h4>
+
+    <div class="cart-drawer-featured-product__price">
+      {%- if product.price_varies -%}
+        <span class="price">
+          {{ 'products.product.price.from_price_html' | t: price: product.price_min | money }}
+        </span>
+      {%- else -%}
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price price--on-sale">
+            <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+            {{ product.price | money }}
+          </span>
+          <span class="price price--compare">
+            <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+            <s>{{ product.compare_at_price | money }}</s>
+          </span>
+        {%- else -%}
+          <span class="price">
+            {{ product.price | money }}
+          </span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <button
+    class="cart-drawer-featured-product__add-to-cart"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    {% unless product.selected_or_first_available_variant.available %}
+      disabled
+    {% endunless %}
+  >
+    add to cart
+  </button>
+</div>

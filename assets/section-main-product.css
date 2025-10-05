@@ -10,6 +10,34 @@ product-info {
   gap: 0;
 }
 
+/* Simple 2-column gallery grid - minimal changes */
+@media screen and (min-width: 750px) {
+  /* Create 2-column grid */
+  .product__media-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* Remove spacing */
+  .product__media-item {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Show ALL media items (override thumbnail hiding) */
+  .product--thumbnail .product__media-item:not(.is-active),
+  .product--thumbnail_slider .product__media-item:not(.is-active) {
+    display: block !important;
+  }
+
+  /* Remove borders */
+  .product__media-list {
+    --media-border-width: 0px;
+    --media-radius: 0px;
+  }
+}
+
 .product--no-media {
   max-width: 57rem;
   margin: 0 auto;
@@ -67,7 +95,7 @@ product-info {
   }
 
   .product--large:not(.product--no-media) .product__info-wrapper {
-    padding: 0 0 0 4rem;
+    padding: 0 2rem 0 2rem;
     max-width: 35%;
     width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2);
   }
@@ -78,8 +106,8 @@ product-info {
 
   .product--medium:not(.product--no-media) .product__media-wrapper,
   .product--small:not(.product--no-media) .product__info-wrapper {
-    max-width: 55%;
-    width: calc(55% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--medium:not(.product--no-media) .product__info-wrapper,
@@ -172,7 +200,6 @@ product-info {
   flex: 0 0 100%;
   padding: 0;
   margin: 0 0 1.2rem 0;
-  max-width: 44rem;
   min-width: fit-content;
   border: none;
 }
@@ -218,7 +245,6 @@ product-info {
 /* Product info */
 
 .product__info-container > * + * {
-  margin: 1.5rem 0;
 }
 
 .product__info-container iframe {
@@ -228,7 +254,7 @@ product-info {
 .product__info-container .product-form,
 .product__info-container .product__description,
 .product__info-container .icon-with-text {
-  margin: 2.5rem 0;
+  margin: 1rem 0;
 }
 
 .product__text {
@@ -247,7 +273,6 @@ a.product__text {
 
 .product__title {
   word-break: break-word;
-  margin-bottom: 1.5rem;
 }
 
 .product__title > * {
@@ -255,7 +280,8 @@ a.product__text {
 }
 
 .product__title > a {
-  display: none;
+  color: black !important;
+  text-decoration: none !important;
 }
 
 .product__title + .product__text.caption-with-letter-spacing {
@@ -299,6 +325,252 @@ a.product__text {
   .product__info-container > *:first-child {
     margin-top: 0;
   }
+}
+
+/* Uniform font size and black color for all text elements in product info container with sticky column */
+.product__info-container.product__column-sticky,
+.product__info-container.product__column-sticky *:not(.product-form__submit):not(.product-form__submit *) {
+  font-size: 14px ;
+  line-height: 1.4 !important;
+  color: #000000 !important;
+}
+
+/* Preserve heading hierarchy while maintaining uniform size and black color */
+.product__info-container.product__column-sticky h1,
+.product__info-container.product__column-sticky h2,
+.product__info-container.product__column-sticky h3,
+.product__info-container.product__column-sticky h4,
+.product__info-container.product__column-sticky h5,
+.product__info-container.product__column-sticky h6,
+.product__info-container.product__column-sticky .h1,
+.product__info-container.product__column-sticky .h2,
+.product__info-container.product__column-sticky .h3,
+.product__info-container.product__column-sticky .h4,
+.product__info-container.product__column-sticky .h5,
+.product__info-container.product__column-sticky .h6 {
+  font-size: 14px ;
+  line-height: 1.4 !important;
+  color: #000000 !important;
+}
+
+/* Ensure all text-related elements have uniform font size and black color */
+.product__info-container.product__column-sticky .product__text,
+.product__info-container.product__column-sticky .product__title,
+.product__info-container.product__column-sticky .product__sku,
+.product__info-container.product__column-sticky .product__inventory,
+.product__info-container.product__column-sticky .price,
+.product__info-container.product__column-sticky .caption,
+.product__info-container.product__column-sticky .caption-with-letter-spacing,
+.product__info-container.product__column-sticky .subtitle,
+.product__info-container.product__column-sticky .form__label,
+.product__info-container.product__column-sticky .quantity__label,
+.product__info-container.product__column-sticky .quantity__rules,
+.product__info-container.product__column-sticky .price-per-item,
+.product__info-container.product__column-sticky .volume-pricing,
+.product__info-container.product__column-sticky .product__tax,
+.product__info-container.product__column-sticky .button:not(.product-form__submit),
+.product__info-container.product__column-sticky .link,
+.product__info-container.product__column-sticky p:not(.product-form__submit p),
+.product__info-container.product__column-sticky span:not(.product-form__submit span),
+.product__info-container.product__column-sticky div:not(.product-form__submit div),
+.product__info-container.product__column-sticky label:not(.product-form__submit label),
+.product__info-container.product__column-sticky input:not(.product-form__submit input),
+.product__info-container.product__column-sticky select:not(.product-form__submit select),
+.product__info-container.product__column-sticky textarea:not(.product-form__submit textarea) {
+  font-size: 14px ;
+  line-height: 1.4 !important;
+  color: #000000 !important;
+}
+
+/* Hide quantity selector on product pages */
+.product-form__quantity,
+.product-form__input.product-form__quantity,
+[id^="Quantity-Form-"],
+.quantity__label,
+.quantity__input,
+.quantity__button,
+.quantity__rules,
+.quantity,
+quantity-input,
+.price-per-item__container {
+  display: none !important;
+}
+
+/* Hide all payment buttons except Add to Cart */
+.shopify-payment-button,
+.shopify-payment-button__button,
+.shopify-payment-button__button--unbranded,
+.shopify-payment-button__more-options,
+.dynamic-checkout__content,
+[data-shopify="payment-button"],
+.additional-checkout-buttons,
+.payment-button,
+.buy-with-shop,
+shopify-payment-terms,
+.installment {
+  display: none !important;
+}
+
+/* Ensure Add to Cart button remains visible and styled properly */
+.product-form__submit {
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Make Add to Cart button primary style when dynamic checkout is hidden */
+.product-form__submit.button--secondary {
+  background-color: rgba(var(--color-button), var(--alpha-button-background)) !important;
+  color: rgb(var(--color-button-text)) !important;
+}
+
+/* Custom black styling for Add to Cart button */
+.product-form__submit,
+.product-form__submit.button--secondary,
+.product-form__submit.button--primary,
+.product__info-container.product__column-sticky .product-form__submit,
+.product__info-container.product__column-sticky .product-form__submit.button--secondary,
+.product__info-container.product__column-sticky .product-form__submit.button--primary {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+}
+
+.product-form__submit:hover,
+.product-form__submit.button--secondary:hover,
+.product-form__submit.button--primary:hover,
+.product__info-container.product__column-sticky .product-form__submit:hover,
+.product__info-container.product__column-sticky .product-form__submit.button--secondary:hover,
+.product__info-container.product__column-sticky .product-form__submit.button--primary:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+}
+
+.product-form__submit:focus,
+.product-form__submit.button--secondary:focus,
+.product-form__submit.button--primary:focus,
+.product__info-container.product__column-sticky .product-form__submit:focus,
+.product__info-container.product__column-sticky .product-form__submit.button--secondary:focus,
+.product__info-container.product__column-sticky .product-form__submit.button--primary:focus {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+}
+
+/* Override any pseudo-elements that might affect the button appearance */
+.product-form__submit::before,
+.product-form__submit.button--secondary::before,
+.product-form__submit.button--primary::before {
+  background-color: #000000 !important;
+}
+
+.product-form__submit::after,
+.product-form__submit.button--secondary::after,
+.product-form__submit.button--primary::after {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  z-index: -1 !important;
+}
+
+/* Override the button text specifically to ensure white color */
+.product-form__submit span,
+.product-form__submit.button--secondary span,
+.product-form__submit.button--primary span,
+.product__info-container.product__column-sticky .product-form__submit span,
+.product__info-container.product__column-sticky .product-form__submit.button--secondary span,
+.product__info-container.product__column-sticky .product-form__submit.button--primary span {
+  color: #ffffff !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+}
+
+/* Hide pickup availability preview and related elements */
+pickup-availability,
+.pickup-availability-preview,
+.product__pickup-availabilities,
+pickup-availability-drawer,
+.pickup-availability-info,
+.pickup-availability-button,
+.pickup-availability-list,
+.pickup-availability-header,
+.pickup-availability-drawer-title,
+.pickup-availability-drawer-button,
+.pickup-availability-variant,
+.pickup-availability-address,
+.pickup-availability-list__item {
+  display: none !important;
+}
+
+/* Simplify product accordion - remove all borders and default icons */
+.product__accordion.accordion.quick-add-hidden .svg-wrapper,
+.product__accordion .svg-wrapper,
+.product__accordion .icon-caret,
+.product__accordion summary .icon-caret {
+  display: none !important;
+}
+
+/* Remove all borders from accordion */
+.product__accordion summary {
+  border: none !important;
+  padding: 10px 0 !important;
+  margin: 0 !important;
+  position: relative !important;
+}
+
+.product__accordion.accordion {
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Style accordion title */
+.product__accordion .accordion__title {
+  font-size: 14px ;
+  color: #000000 !important;
+  text-decoration: underline dotted;
+  margin: 0 !important;
+  max-width: calc(100% - 30px) !important;
+}
+
+/* Care guide accordion title with dashed underline */
+#Details-care-guide .accordion__title {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 0.3rem;
+}
+
+/* Style accordion content */
+.product__accordion .accordion__content {
+  padding: 10px 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* Add custom SVG arrow icon on the right */
+.product__accordion summary::after {
+  content: '' !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 20px !important;
+  height: 20px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true' data-slot='icon' class=' h-5 w-5 '%3E%3Cpath fill-rule='evenodd' d='M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Rotate arrow when accordion is open */
+.product__accordion details[open] > summary::after {
+  transform: translateY(-50%) rotate(180deg) !important;
 }
 
 .product__description-title {
@@ -364,7 +636,10 @@ a.product__text {
 }
 
 .product-form__buttons {
-  max-width: 44rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .product--no-media .product__info-container > modal-opener {
@@ -426,7 +701,7 @@ a.product__text {
   }
 
   .product__media-list {
-    padding-right: calc(var(--media-shadow-horizontal-offset) * var(--media-shadow-visible));
+    padding-right: 0 !important;
   }
 
   .product--thumbnail .product__media-item:not(.is-active),
@@ -498,7 +773,10 @@ a.product__text {
   }
 
   .product--columns .product__media-item:not(.product__media-item--single):not(:only-child) {
-    max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .product--large.product--columns .product__media-item--full .deferred-media__poster-button {
@@ -529,13 +807,14 @@ a.product__text {
 
 @media screen and (min-width: 990px) {
   .product--stacked .product__media-item {
-    max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
-  .product:not(.product--columns) .product__media-list .product__media-item:first-child,
-  .product:not(.product--columns) .product__media-list .product__media-item--full {
-    width: 100%;
-    max-width: 100%;
+  .product__media-list .product__media-item:first-child,
+  .product__media-list .product__media-item--full {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .product__modal-opener .product__media-icon {
@@ -633,9 +912,19 @@ a.product__text {
   overflow: auto;
 }
 
-.product-media-modal__content > *:not(.active),
+.product-media-modal__content > *:not(.active) {
+  display: none;
+}
+
 .product__media-list .deferred-media {
   display: none;
+}
+
+/* Override for 2-column grid - show deferred media */
+@media screen and (min-width: 750px) {
+  .product__media-list .deferred-media {
+    display: block !important;
+  }
 }
 
 @media screen and (min-width: 750px) {
@@ -1297,6 +1586,22 @@ a.product__text {
   max-width: calc(100% - calc(var(--media-border-width) * 2));
 }
 
+/* Override for 2-column grid - ensure container shows properly */
+@media screen and (min-width: 750px) {
+  .product-media-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    position: relative;
+    display: block !important;
+  }
+  
+  .product-media-container .media {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+  }
+}
+
 .product-media-container.constrain-height {
   /* arbitrary offset value based on average theme spacing and header height */
   --viewport-offset: 400px;
@@ -1309,6 +1614,7 @@ a.product__text {
 .product-media-container.constrain-height.media-fit-contain {
   --contained-width: calc(var(--constrained-height) * var(--aspect-ratio));
   width: min(var(--contained-width), 100%);
+  border: 0px solid #000!important;
 }
 
 .product-media-container .media {
@@ -1317,6 +1623,15 @@ a.product__text {
 
 .product-media-container.constrain-height .media {
   padding-top: min(var(--constrained-height), var(--ratio-percent));
+}
+
+/* Ensure media containers have proper dimensions for 2-column grid */
+@media screen and (min-width: 750px) {
+  .product__media-list .product-media-container .media {
+    padding-top: var(--ratio-percent) !important;
+    position: relative !important;
+    display: block !important;
+  }
 }
 
 @media screen and (max-width: 749px) {
@@ -1376,7 +1691,6 @@ a.product__text {
 
   display: block;
   position: relative;
-  max-width: 44rem;
   margin-bottom: 2.5rem;
 }
 

@@ -1,0 +1,614 @@
+{{ 'section-custom-content-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #CustomSlider-{{ section.id }} {
+    position: relative;
+    {%- if section.settings.height == 'small' -%}
+      min-height: 300px;
+    {%- elsif section.settings.height == 'medium' -%}
+      min-height: 500px;
+    {%- elsif section.settings.height == 'large' -%}
+      min-height: 700px;
+    {%- elsif section.settings.height == 'full' -%}
+      min-height: 100vh;
+    {%- endif -%}
+  }
+
+  {%- for block in section.blocks -%}
+    #CustomSlide-{{ section.id }}-{{ forloop.index0 }} {
+      {%- if section.settings.height == 'small' -%}
+        min-height: 300px;
+      {%- elsif section.settings.height == 'medium' -%}
+        min-height: 500px;
+      {%- elsif section.settings.height == 'large' -%}
+        min-height: 700px;
+      {%- elsif section.settings.height == 'full' -%}
+        min-height: 100vh;
+      {%- endif -%}
+      {%- if block.settings.background_color != blank -%}
+        background-color: {{ block.settings.background_color }};
+      {%- endif -%}
+      {%- if block.settings.text_color != blank -%}
+        color: {{ block.settings.text_color }};
+      {%- endif -%}
+    }
+
+    #CustomSlide-{{ section.id }}-{{ forloop.index0 }}::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, {{ block.settings.image_overlay_opacity | divided_by: 100.0 }});
+      z-index: 1;
+    }
+
+    #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .custom-slide__content {
+      position: relative;
+      z-index: 2;
+    }
+
+    {%- if block.settings.text_color != blank -%}
+      #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .custom-slide__heading,
+      #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .custom-slide__text,
+      #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .custom-slide__text p {
+        color: {{ block.settings.text_color }};
+      }
+    {%- endif -%}
+
+    /* Button styles - Override base styles and apply custom colors */
+    #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .button {
+      /* Reset base button styles */
+      outline: none !important;
+      border: 1px solid;
+      box-shadow: none !important;
+
+      {%- if block.settings.button_background_color != blank -%}
+        background-color: {{ block.settings.button_background_color }};
+      {%- endif -%}
+      {%- if block.settings.button_text_color != blank -%}
+        color: {{ block.settings.button_text_color }};
+        border: 1px solid {{ block.settings.button_text_color }} !important;
+      {%- endif -%}
+    }
+
+    {%- if block.settings.button_hover_background_color != blank or block.settings.button_hover_text_color != blank -%}
+      #CustomSlide-{{ section.id }}-{{ forloop.index0 }} .button:hover {
+        {%- if block.settings.button_hover_background_color != blank -%}
+          background-color: {{ block.settings.button_hover_background_color }};
+          border-color: {{ block.settings.button_hover_background_color }} !important;
+        {%- endif -%}
+        {%- if block.settings.button_hover_text_color != blank -%}
+          color: {{ block.settings.button_hover_text_color }};
+        {%- endif -%}
+      }
+    {%- endif -%}
+  {%- endfor -%}
+{%- endstyle -%}
+
+<div
+  id="CustomSlider-{{ section.id }}"
+  class="custom-slider custom-slider--{{ section.settings.height }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+>
+  <div class="custom-slider__track">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign slide_fetch_priority = 'auto'
+        if section.index == 1 and forloop.index0 == 0
+          assign slide_fetch_priority = 'high'
+        endif
+      -%}
+
+      <div
+        id="CustomSlide-{{ section.id }}-{{ forloop.index0 }}"
+        class="custom-slide custom-slide--content-align-{{ block.settings.desktop_content_alignment }} custom-slide--content-align-mobile-{{ block.settings.mobile_content_alignment }} custom-slide--content-position-{{ block.settings.content_position }}{% if block.settings.button_label == blank and block.settings.section_link != blank %} custom-slide--clickable{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+        {% if block.settings.button_label == blank and block.settings.section_link != blank %}
+          onclick="window.location.href='{{ block.settings.section_link }}'"
+        {% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.image != blank -%}
+          <div class="custom-slide__media custom-slide__media--{{ block.settings.image_behavior }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+            {{
+              block.settings.image
+              | image_url: width: 3840
+              | image_tag:
+                sizes: '100vw',
+                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                fetchpriority: slide_fetch_priority
+            }}
+          </div>
+        {%- endif -%}
+
+        <div class="custom-slide__content{% if block.settings.content_layout == 'between' %} custom-slide__content--layout-between{% endif %} section-{{ section.id }}-padding">
+          <div class="w-full">
+            <div class="custom-slide__text-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {%- if block.settings.heading != blank -%}
+                <h2 class="custom-slide__heading inline-richtext {{ block.settings.heading_size }}{% if block.settings.underline_heading %} custom-slide__heading--underlined{% endif %}">
+                  {{ block.settings.heading }}
+                </h2>
+              {%- endif -%}
+
+              {%- if block.settings.content_layout == 'between' -%}
+                <div class="custom-slide__text-content">
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="custom-slide__text rte {{ block.settings.text_style }}">
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank -%}
+                <div class="custom-slide__button">
+                  <a
+                    {% if block.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{ block.settings.button_label | escape }}
+                  </a>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.content_layout == 'between' -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <!-- Pagination dots -->
+    <div class="custom-slider__pagination">
+      {%- for block in section.blocks -%}
+        <button
+          class="custom-slider__dot{% if forloop.index0 == 0 %} custom-slider__dot--active{% endif %}"
+          data-slide="{{ forloop.index0 }}"
+          aria-label="Go to slide {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Navigation arrows (optional) -->
+    {%- if section.settings.show_arrows -%}
+      <button class="custom-slider__arrow custom-slider__arrow--prev" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="custom-slider__arrow custom-slider__arrow--next" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+<script src="{{ 'custom-content-slider.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Custom Content Slider",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "default": true,
+      "label": "Auto-play slides"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 9500,
+      "step": 500,
+      "unit": "ms",
+      "label": "Auto-play speed",
+      "default": 5000,
+      "info": "Time between slide transitions in milliseconds"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "default": true,
+      "label": "Show navigation arrows"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full screen"
+        }
+      ],
+      "default": "medium",
+      "label": "Section height"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Slide Heading",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "Small"
+            },
+            {
+              "value": "h1",
+              "label": "Medium"
+            },
+            {
+              "value": "h0",
+              "label": "Large"
+            },
+            {
+              "value": "hxl",
+              "label": "Extra large"
+            },
+            {
+              "value": "hxxl",
+              "label": "XX-Large"
+            }
+          ],
+          "default": "h1",
+          "label": "Heading size"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Add your slide content here. This can include multiple paragraphs and formatted text.</p>",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "subtitle",
+              "label": "Subtitle"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "Caption with letter spacing"
+            }
+          ],
+          "default": "body",
+          "label": "Text style"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Learn More",
+          "label": "Button label",
+          "info": "Leave empty to hide button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "Use outline button style"
+        },
+        {
+          "type": "url",
+          "id": "section_link",
+          "label": "Slide link",
+          "info": "Makes entire slide clickable when no button is present"
+        },
+        {
+          "type": "checkbox",
+          "id": "underline_heading",
+          "default": false,
+          "label": "Underline heading with dots"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 10,
+          "unit": "%",
+          "label": "Image overlay opacity",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "image_behavior",
+          "options": [
+            {
+              "value": "stretch",
+              "label": "Stretch (Full overlay)"
+            },
+            {
+              "value": "center",
+              "label": "Center (With padding)"
+            }
+          ],
+          "default": "stretch",
+          "label": "Image behavior"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "info": "Used when no image is selected"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "header",
+          "content": "Button Colors"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_background_color",
+          "label": "Button hover background color"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_text_color",
+          "label": "Button hover text color"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top left"
+            },
+            {
+              "value": "top-center",
+              "label": "Top center"
+            },
+            {
+              "value": "top-right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle-left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle-center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle-right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "middle-center",
+          "label": "Content position"
+        },
+        {
+          "type": "select",
+          "id": "desktop_content_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center",
+          "label": "Desktop content alignment"
+        },
+        {
+          "type": "select",
+          "id": "mobile_content_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center",
+          "label": "Mobile content alignment"
+        },
+        {
+          "type": "select",
+          "id": "content_layout",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "between",
+              "label": "Space between (Headline top, text/button bottom)"
+            }
+          ],
+          "default": "normal",
+          "label": "Content layout"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Content Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "First Slide",
+            "text": "<p>This is the first slide content.</p>"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Second Slide",
+            "text": "<p>This is the second slide content.</p>"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Third Slide",
+            "text": "<p>This is the third slide content.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

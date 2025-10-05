@@ -1,8 +1,10 @@
 .facets-container {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(2, auto);
   padding-top: 1rem;
+  padding-left: 1rem; 
+  padding-right: 1rem;
 }
 
 .active-facets-mobile {

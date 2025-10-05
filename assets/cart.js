@@ -101,6 +101,18 @@ class CartItems extends HTMLElement {
               targetElement.replaceWith(sourceElement);
             }
           }
+          
+          // Update cart-drawer empty state based on new content
+          const cartDrawerWrapper = document.querySelector('cart-drawer');
+          const newCartDrawer = html.querySelector('cart-drawer');
+          if (cartDrawerWrapper && newCartDrawer) {
+            // Copy the is-empty class state from the fetched HTML
+            if (newCartDrawer.classList.contains('is-empty')) {
+              cartDrawerWrapper.classList.add('is-empty');
+            } else {
+              cartDrawerWrapper.classList.remove('is-empty');
+            }
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -292,3 +304,110 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
+
+// Cart Drawer Featured Product Add to Cart functionality
+// Use event delegation on document to handle dynamically rendered content
+document.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('cart-drawer-featured-product__add-to-cart')) {
+      e.preventDefault();
+      
+      const button = e.target;
+      const variantId = button.dataset.variantId;
+      
+      if (!variantId || button.disabled) return;
+      
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Adding...';
+      
+      console.log('Adding to cart:', { variantId, originalText }); // Debug log
+      
+      try {
+        const config = fetchConfig('javascript');
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        delete config.headers['Content-Type'];
+
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        // Add cart sections for proper cart updates - same as product-form.js
+        const cart = document.querySelector('cart-drawer');
+        if (cart && typeof cart.getSectionsToRender === 'function') {
+          formData.append(
+            'sections',
+            cart.getSectionsToRender().map((section) => section.id)
+          );
+          formData.append('sections_url', window.location.pathname);
+          cart.setActiveElement(document.activeElement);
+        }
+        
+        config.body = formData;
+
+        const response = await fetch(routes.cart_add_url, config);
+        const result = await response.json();
+        
+        console.log('Cart add response:', result); // Debug log
+
+        if (result.status) {
+          // Handle specific error cases
+          let errorMessage = result.description || result.message || 'Failed to add to cart';
+          console.log('Cart add error:', errorMessage); // Debug log
+          
+          // Check for quantity/inventory errors
+          if (errorMessage.toLowerCase().includes('limit') || 
+              errorMessage.toLowerCase().includes('maximum') || 
+              errorMessage.toLowerCase().includes('already in your cart') ||
+              errorMessage.toLowerCase().includes('inventory') ||
+              result.status === 422) {
+            
+            button.textContent = 'Already in cart';
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.disabled = false;
+            }, 2000);
+            return; // Don't throw error, just show message
+          }
+          
+          throw new Error(errorMessage);
+        }
+
+        // Success - show feedback
+        button.textContent = 'Added!';
+        console.log('Successfully added to cart:', result); // Debug log
+        
+        // Publish cart update event - same as product-form.js
+        if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: 'cart-drawer-featured',
+            productVariantId: variantId,
+            cartData: result,
+          });
+        }
+
+        // Update cart drawer - same as product-form.js
+        if (cart && typeof cart.renderContents === 'function') {
+          cart.renderContents(result);
+        }
+
+        // Remove is-empty class if cart was empty
+        if (cart && cart.classList.contains('is-empty')) {
+          cart.classList.remove('is-empty');
+        }
+
+        // Reset button after delay
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 1500);
+
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        button.textContent = 'Error';
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      }
+    }
+  });

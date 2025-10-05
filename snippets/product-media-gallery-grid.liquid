@@ -1,0 +1,84 @@
+{% comment %}
+  Renders a product media gallery in a grid layout for featured product section
+  Shows 3-4 product images in individual columns
+
+  Accepts:
+  - product: {Object} Product liquid object
+  - variant_images: {Array} Product images associated with a variant
+  - max_images: {Number} Maximum number of images to display (default: 4)
+
+  Usage:
+  {% render 'product-media-gallery-grid', product: product, variant_images: variant_images, max_images: 4 %}
+{% endcomment %}
+
+{%- liquid
+  assign max_images = max_images | default: 4
+  assign images_to_show = product.media | where: 'media_type', 'image' | slice: 0, max_images
+  assign media_count = images_to_show.size
+-%}
+
+{%- if media_count > 0 -%}
+  {%- for media in images_to_show -%}
+    <div class="grid__item product__media-item-grid">
+      <div
+        class="product-media-container global-media-settings gradient{% if section.settings.constrain_to_viewport %} constrain-height{% endif %}"
+        style="--ratio: {{ media.preview_image.aspect_ratio }}; --preview-ratio: {{ media.preview_image.aspect_ratio }};"
+      >
+        {%- if media.media_type == 'image' -%}
+          <img
+            class="product__media global-media-settings global-media-settings--no-shadow"
+            srcset="
+              {%- if media.preview_image.width >= 275 -%}{{ media.preview_image | image_url: width: 275 }} 275w,{%- endif -%}
+              {%- if media.preview_image.width >= 550 -%}{{ media.preview_image | image_url: width: 550 }} 550w,{%- endif -%}
+              {%- if media.preview_image.width >= 710 -%}{{ media.preview_image | image_url: width: 710 }} 710w,{%- endif -%}
+              {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | image_url: width: 1100 }} 1100w,{%- endif -%}
+              {{ media.preview_image | image_url }} {{ media.preview_image.width }}w
+            "
+            sizes="(min-width: 1200px) calc((100vw - 10rem) / 6), (min-width: 750px) calc((100vw - 5rem) / 4), calc(100vw - 3rem)"
+            src="{{ media.preview_image | image_url: width: 550 }}"
+            alt="{{ media.alt | escape }}"
+            loading="{%- if forloop.first -%}eager{%- else -%}lazy{%- endif -%}"
+            width="{{ media.preview_image.width }}"
+            height="{{ media.preview_image.height }}"
+            data-media-id="{{ media.id }}"
+            {% if section.settings.image_zoom != 'none' %}
+              role="button"
+              tabindex="0"
+              aria-label="{{ 'products.product.media.open_media' | t: index: forloop.index }}"
+              data-pswp-width="{{ media.preview_image.width }}"
+              data-pswp-height="{{ media.preview_image.height }}"
+            {% endif %}
+          >
+        {%- else -%}
+          {%
+            render 'product-thumbnail',
+            media: media,
+            media_count: media_count,
+            position: forloop.index,
+            desktop_layout: 'columns',
+            mobile_layout: 'columns',
+            loop: section.settings.enable_video_looping,
+            modal_id: section.id,
+            xr_button: false,
+            media_width: 0.25,
+            media_fit: section.settings.media_fit,
+            constrain_to_viewport: section.settings.constrain_to_viewport,
+            lazy_load: forloop.first == false
+          %}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+{%- else -%}
+  {%- comment -%} Show placeholder images if no product images {%- endcomment -%}
+  {%- for i in (1..4) -%}
+    <div class="grid__item product__media-item-grid">
+      <div
+        class="product-media-container global-media-settings gradient{% if section.settings.constrain_to_viewport %} constrain-height{% endif %}"
+        style="--ratio: 1.0; --preview-ratio: 1.0;"
+      >
+        {{ 'product-apparel-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    </div>
+  {%- endfor -%}
+{%- endif -%}

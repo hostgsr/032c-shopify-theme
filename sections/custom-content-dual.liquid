@@ -69,57 +69,60 @@
     }
   {%- endif -%}
 
-  /* Left column button styles */
-  {%- if section.settings.button_background_color_left != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--left .button {
+    /* Left column button styles - Override base styles */
+  #CustomDual-{{ section.id }} .custom-dual__column--left .button {
+    /* Reset base button styles */
+    outline: none !important;
+    box-shadow: none !important;
+    border:1px solid;
+    border-color: {{ section.settings.text_color_left }};
+    {%- if section.settings.button_background_color_left != blank -%}
       background-color: {{ section.settings.button_background_color_left }};
-      border-color: {{ section.settings.button_background_color_left }};
-    }
-  {%- endif -%}
-
-  {%- if section.settings.button_text_color_left != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--left .button {
+    {%- endif -%}
+    {%- if section.settings.button_text_color_left != blank -%}
       color: {{ section.settings.button_text_color_left }};
-    }
-  {%- endif -%}
+      border: 1px solid {{ section.settings.button_text_color_left }} !important;
+    {%- endif -%}
+  }
 
-  {%- if section.settings.button_hover_background_color_left != blank -%}
+  {%- if section.settings.button_hover_background_color_left != blank or section.settings.button_hover_text_color_left != blank -%}
     #CustomDual-{{ section.id }} .custom-dual__column--left .button:hover {
-      background-color: {{ section.settings.button_hover_background_color_left }};
-      border-color: {{ section.settings.button_hover_background_color_left }};
+      {%- if section.settings.button_hover_background_color_left != blank -%}
+        background-color: {{ section.settings.button_hover_background_color_left }};
+        border-color: {{ section.settings.button_hover_background_color_left }} !important;
+        border:1px solid;
+      {%- endif -%}
+      {%- if section.settings.button_hover_text_color_left != blank -%}
+        color: {{ section.settings.button_hover_text_color_left }};
+      {%- endif -%}
     }
   {%- endif -%}
 
-  {%- if section.settings.button_hover_text_color_left != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--left .button:hover {
-      color: {{ section.settings.button_hover_text_color_left }};
-    }
-  {%- endif -%}
-
-  /* Right column button styles */
-  {%- if section.settings.button_background_color_right != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--right .button {
+    /* Right column button styles - Override base styles */
+  #CustomDual-{{ section.id }} .custom-dual__column--right .button {
+    /* Reset base button styles */
+    outline: none !important;
+    box-shadow: none !important;
+    border:1px solid;
+    {%- if section.settings.button_background_color_right != blank -%}
       background-color: {{ section.settings.button_background_color_right }};
-      border-color: {{ section.settings.button_background_color_right }};
-    }
-  {%- endif -%}
-
-  {%- if section.settings.button_text_color_right != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--right .button {
+    {%- endif -%}
+    {%- if section.settings.button_text_color_right != blank -%}
       color: {{ section.settings.button_text_color_right }};
-    }
-  {%- endif -%}
+      border: 1px solid {{ section.settings.button_text_color_right }} !important;
+    {%- endif -%}
+  }
 
-  {%- if section.settings.button_hover_background_color_right != blank -%}
+  {%- if section.settings.button_hover_background_color_right != blank or section.settings.button_hover_text_color_right != blank -%}
     #CustomDual-{{ section.id }} .custom-dual__column--right .button:hover {
-      background-color: {{ section.settings.button_hover_background_color_right }};
-      border-color: {{ section.settings.button_hover_background_color_right }};
-    }
-  {%- endif -%}
-
-  {%- if section.settings.button_hover_text_color_right != blank -%}
-    #CustomDual-{{ section.id }} .custom-dual__column--right .button:hover {
-      color: {{ section.settings.button_hover_text_color_right }};
+      {%- if section.settings.button_hover_background_color_right != blank -%}
+        background-color: {{ section.settings.button_hover_background_color_right }};
+        border-color: {{ section.settings.button_hover_background_color_right }} !important;
+      {%- endif -%}
+      {%- if section.settings.button_hover_text_color_right != blank -%}
+        color: {{ section.settings.button_hover_text_color_right }};
+        border:1px solid;
+      {%- endif -%}
     }
   {%- endif -%}
 
@@ -148,18 +151,19 @@
   class="custom-dual custom-dual--{{ section.settings.height }} custom-dual--layout-{{ section.settings.layout }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
   <div class="custom-dual__container{% if section.settings.layout == 'stacked' %} custom-dual__container--stacked{% endif %}">
-    
     <!-- Left Column -->
-    <div class="custom-dual__column custom-dual__column--left custom-dual__column--content-align-{{ section.settings.content_alignment_left }} custom-dual__column--content-position-{{ section.settings.content_position_left }}{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} custom-dual__column--clickable{% endif %}"{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} onclick="window.location.href='{{ section.settings.section_link_left }}'"{% endif %}>
+    <div
+      class="custom-dual__column custom-dual__column--left custom-dual__column--content-align-{{ section.settings.content_alignment_left }} custom-dual__column--content-position-{{ section.settings.content_position_left }}{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} custom-dual__column--clickable{% endif %}"
+      {% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %}
+        onclick="window.location.href='{{ section.settings.section_link_left }}'"
+      {% endif %}
+    >
       {%- if section.settings.image_left != blank -%}
         <div class="custom-dual__media custom-dual__media--{{ section.settings.image_behavior_left }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
           {{
             section.settings.image_left
             | image_url: width: 1920
-            | image_tag:
-              sizes: '50vw',
-              widths: '375, 550, 750, 1100, 1500, 1920',
-              fetchpriority: fetch_priority
+            | image_tag: sizes: '50vw', widths: '375, 550, 750, 1100, 1500, 1920', fetchpriority: fetch_priority
           }}
         </div>
       {%- endif -%}
@@ -171,11 +175,11 @@
               {{ section.settings.heading_left }}
             </h2>
           {%- endif -%}
-          
+
           {%- if section.settings.content_layout_left == 'between' -%}
             <div class="custom-dual__text-content">
           {%- endif -%}
-          
+
           {%- if section.settings.text_left != blank -%}
             <div class="custom-dual__text rte {{ section.settings.text_style_left }}">
               {{ section.settings.text_left }}
@@ -196,7 +200,7 @@
               </a>
             </div>
           {%- endif -%}
-          
+
           {%- if section.settings.content_layout_left == 'between' -%}
             </div>
           {%- endif -%}
@@ -205,16 +209,18 @@
     </div>
 
     <!-- Right Column -->
-    <div class="custom-dual__column custom-dual__column--right custom-dual__column--content-align-{{ section.settings.content_alignment_right }} custom-dual__column--content-position-{{ section.settings.content_position_right }}{% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %} custom-dual__column--clickable{% endif %}"{% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %} onclick="window.location.href='{{ section.settings.section_link_right }}'"{% endif %}>
+    <div
+      class="custom-dual__column custom-dual__column--right custom-dual__column--content-align-{{ section.settings.content_alignment_right }} custom-dual__column--content-position-{{ section.settings.content_position_right }}{% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %} custom-dual__column--clickable{% endif %}"
+      {% if section.settings.button_label_right == blank and section.settings.section_link_right != blank %}
+        onclick="window.location.href='{{ section.settings.section_link_right }}'"
+      {% endif %}
+    >
       {%- if section.settings.image_right != blank -%}
         <div class="custom-dual__media custom-dual__media--{{ section.settings.image_behavior_right }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
           {{
             section.settings.image_right
             | image_url: width: 1920
-            | image_tag:
-              sizes: '50vw',
-              widths: '375, 550, 750, 1100, 1500, 1920',
-              fetchpriority: fetch_priority
+            | image_tag: sizes: '50vw', widths: '375, 550, 750, 1100, 1500, 1920', fetchpriority: fetch_priority
           }}
         </div>
       {%- endif -%}
@@ -226,11 +232,11 @@
               {{ section.settings.heading_right }}
             </h2>
           {%- endif -%}
-          
+
           {%- if section.settings.content_layout_right == 'between' -%}
             <div class="custom-dual__text-content">
           {%- endif -%}
-          
+
           {%- if section.settings.text_right != blank -%}
             <div class="custom-dual__text rte {{ section.settings.text_style_right }}">
               {{ section.settings.text_right }}
@@ -251,14 +257,13 @@
               </a>
             </div>
           {%- endif -%}
-          
+
           {%- if section.settings.content_layout_right == 'between' -%}
             </div>
           {%- endif -%}
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -846,4 +851,4 @@
     }
   ]
 }
-{% endschema %} 
+{% endschema %}

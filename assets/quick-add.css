@@ -198,7 +198,7 @@
     flex-direction: column;
     position: sticky;
     top: 0;
-    margin-top: -2.5rem;
+    margin-top: 0rem;
     padding-top: 2.5rem;
   }
 }
@@ -342,10 +342,10 @@ quick-add-modal .product__title > h1 {
 quick-add-modal .product__title > a {
   display: block;
   text-decoration: none;
+  color:black
 }
 
 quick-add-modal .product__title > a:hover {
-  color: rgb(var(--color-foreground));
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   text-decoration-thickness: 0.3rem;
@@ -403,4 +403,263 @@ quick-add-bulk .quantity__input {
 
 .quantity__input-disabled {
   pointer-events: none;
+}
+
+/* Hover Quick Add Overlay Styles */
+.card-information .quick-add-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--color-background), 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 2;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.card-information {
+  position: relative;
+}
+
+.product-card-wrapper:hover .card-information .quick-add-hover-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.quick-add-hover-variants,
+.quick-add-hover-single {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.4rem;
+  align-items: center;
+  gap: 0rem;
+  width: 100%;
+}
+
+.hover-variant-option {
+  width: 100%;
+  text-align: center;
+}
+
+.hover-variant-label {
+  display: none; /* Hide the label to save space */
+}
+
+.hover-variant-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: -20px;
+  margin-bottom: 0rem;
+}
+
+.hover-variant-btn {
+  padding: 0.2rem 0.4rem;
+  border: none;
+  background: transparent;
+  color: #000;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 0;
+  min-width: auto;
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: #000;
+  text-underline-offset: 2px;
+}
+
+.hover-variant-btn:hover {
+  text-decoration-style: solid;
+}
+
+.hover-variant-btn.selected {
+  font-weight: 600;
+  text-decoration-style: solid;
+}
+
+.hover-variant-btn--unavailable {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.hover-variant-btn--unavailable:hover {
+  text-decoration: line-through;
+}
+
+.hover-add-to-cart-btn {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #000 !important;
+  text-decoration: underline !important;
+  text-decoration-style: dotted !important;
+  text-decoration-color: #000 !important;
+  text-underline-offset: 2px !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  box-sizing: content-box !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.hover-add-to-cart-btn::before,
+.hover-add-to-cart-btn::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.hover-add-to-cart-btn:hover {
+  text-decoration-style: solid !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #000 !important;
+}
+
+.hover-add-to-cart-btn:hover::before,
+.hover-add-to-cart-btn:hover::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.hover-add-to-cart-btn:focus {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #000 !important;
+}
+
+.hover-add-to-cart-btn:focus::before,
+.hover-add-to-cart-btn:focus::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.hover-add-to-cart-btn:active {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #000 !important;
+}
+
+.hover-add-to-cart-btn:active::before,
+.hover-add-to-cart-btn:active::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.hover-add-to-cart-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Hide regular quick add when hover overlay is active */
+.product-card-wrapper:hover .quick-add:not(.quick-add-hover-overlay) {
+  opacity: 0;
+}
+
+/* Hide title and price on hover to show sizes exactly over them */
+.product-card-wrapper:hover .card__heading,
+.product-card-wrapper:hover .price {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 749px) {
+  .card-information .quick-add-hover-overlay {
+    padding: 0.4rem;
+  }
+  
+  .hover-variant-btn {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.9rem;
+    min-width: auto;
+  }
+  
+  .hover-add-to-cart-btn {
+    font-size: 0.9rem;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+  }
+  
+  /* On mobile, show overlay on tap/touch as well */
+  .product-card-wrapper:active .card-information .quick-add-hover-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Hide title and price on mobile touch */
+  .product-card-wrapper:active .card__heading,
+  .product-card-wrapper:active .price {
+    opacity: 0;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (pointer: coarse) {
+  .hover-variant-btn {
+    min-height: 44px;
+    min-width: auto;
+    padding: 0.4rem 0.6rem;
+  }
 }

@@ -56,30 +56,31 @@
     }
   {%- endif -%}
 
-  /* Button styles */
-  {%- if section.settings.button_background_color != blank -%}
-    #CustomHero-{{ section.id }} .button {
+    /* Button styles - Override base styles and apply custom colors */
+  #CustomHero-{{ section.id }} .button {
+    /* Reset base button styles */
+    outline: none !important;
+    border: 1px solid;
+    box-shadow: none !important;
+
+    {%- if section.settings.button_background_color != blank -%}
       background-color: {{ section.settings.button_background_color }};
-      border-color: {{ section.settings.button_background_color }};
-    }
-  {%- endif -%}
-
-  {%- if section.settings.button_text_color != blank -%}
-    #CustomHero-{{ section.id }} .button {
+    {%- endif -%}
+    {%- if section.settings.button_text_color != blank -%}
       color: {{ section.settings.button_text_color }};
-    }
-  {%- endif -%}
+      border: 1px solid {{ section.settings.button_text_color }} !important;
+    {%- endif -%}
+  }
 
-  {%- if section.settings.button_hover_background_color != blank -%}
+  {%- if section.settings.button_hover_background_color != blank or section.settings.button_hover_text_color != blank -%}
     #CustomHero-{{ section.id }} .button:hover {
-      background-color: {{ section.settings.button_hover_background_color }};
-      border-color: {{ section.settings.button_hover_background_color }};
-    }
-  {%- endif -%}
-
-  {%- if section.settings.button_hover_text_color != blank -%}
-    #CustomHero-{{ section.id }} .button:hover {
-      color: {{ section.settings.button_hover_text_color }};
+      {%- if section.settings.button_hover_background_color != blank -%}
+        background-color: {{ section.settings.button_hover_background_color }};
+        border-color: {{ section.settings.button_hover_background_color }} !important;
+      {%- endif -%}
+      {%- if section.settings.button_hover_text_color != blank -%}
+        color: {{ section.settings.button_hover_text_color }};
+      {%- endif -%}
     }
   {%- endif -%}
 {%- endstyle -%}
@@ -93,7 +94,10 @@
 
 <div
   id="CustomHero-{{ section.id }}"
-  class="custom-hero custom-hero--{{ section.settings.height }} custom-hero--content-align-{{ section.settings.desktop_content_alignment }} custom-hero--content-align-mobile-{{ section.settings.mobile_content_alignment }} custom-hero--content-position-{{ section.settings.content_position }}{% if section.settings.button_label == blank and section.settings.section_link != blank %} custom-hero--clickable{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"{% if section.settings.button_label == blank and section.settings.section_link != blank %} onclick="window.location.href='{{ section.settings.section_link }}'"{% endif %}
+  class="custom-hero custom-hero--{{ section.settings.height }} custom-hero--content-align-{{ section.settings.desktop_content_alignment }} custom-hero--content-align-mobile-{{ section.settings.mobile_content_alignment }} custom-hero--content-position-{{ section.settings.content_position }}{% if section.settings.button_label == blank and section.settings.section_link != blank %} custom-hero--clickable{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  {% if section.settings.button_label == blank and section.settings.section_link != blank %}
+    onclick="window.location.href='{{ section.settings.section_link }}'"
+  {% endif %}
 >
   {%- if section.settings.image != blank -%}
     <div class="custom-hero__media custom-hero__media--{{ section.settings.image_behavior }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -116,11 +120,11 @@
             {{ section.settings.heading }}
           </h2>
         {%- endif -%}
-        
+
         {%- if section.settings.content_layout == 'between' -%}
           <div class="custom-hero__text-content">
         {%- endif -%}
-        
+
         {%- if section.settings.text != blank -%}
           <div class="custom-hero__text rte {{ section.settings.text_style }}">
             {{ section.settings.text }}
@@ -141,7 +145,7 @@
             </a>
           </div>
         {%- endif -%}
-        
+
         {%- if section.settings.content_layout == 'between' -%}
           </div>
         {%- endif -%}
@@ -491,4 +495,4 @@
     }
   ]
 }
-{% endschema %} 
+{% endschema %}

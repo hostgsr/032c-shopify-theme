@@ -7,6 +7,7 @@
 
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-cart-drawer-featured-product.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
@@ -14,6 +15,10 @@
 <style>
   .drawer {
     visibility: hidden;
+  }
+
+  .drawer.active {
+    visibility: visible;
   }
 </style>
 
@@ -258,8 +263,32 @@
                             {%- endif -%}
 
                             {%- if item.variant.available and item.unit_price_measurement -%}
-                              {% render 'unit-price', price: item.unit_price, measurement: item.unit_price_measurement %}
+                              {% render 'unit-price',
+                                price: item.unit_price,
+                                measurement: item.unit_price_measurement
+                              %}
                             {%- endif -%}
+
+                            <!-- Small delete icon in price wrapper -->
+                            <cart-remove-button
+                              class="cart-item__delete-icon"
+                              id="CartDrawer-DeleteIcon-{{ item.index | plus: 1 }}"
+                              data-index="{{ item.index | plus: 1 }}"
+                            >
+                              <button
+                                type="button"
+                                class="cart-item__delete-button"
+                                aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
+                                data-variant-id="{{ item.variant.id }}"
+                                {% if item.instructions and item.instructions.can_remove == false %}
+                                  class="hidden"
+                                {% endif %}
+                              >
+                                <span class="svg-wrapper">
+                                  {{- 'icon-remove.svg' | inline_asset_content -}}
+                                </span>
+                              </button>
+                            </cart-remove-button>
                           </div>
                         </td>
                         {%- liquid
@@ -575,6 +604,25 @@
             {{ 'sections.cart.checkout' | t }}
           </button>
         </div>
+
+        {%- comment -%}
+          Add featured products section when cart drawer is not empty
+        {%- endcomment -%}
+        {%- if cart != empty and settings.cart_drawer_collection != blank -%}
+          <div class="cart-drawer__featured-products">
+            <h3 class="cart-drawer__featured-heading h4">
+              {{ 'sections.cart.featured_products' | t | default: 'You might also like' }}
+            </h3>
+            <div class="cart-drawer__featured-grid">
+              {%- assign featured_products = settings.cart_drawer_collection.products -%}
+              {%- for product in featured_products limit: 10 -%}
+                {%- unless cart.items contains product.selected_or_first_available_variant -%}
+                  {% render 'cart-drawer-featured-product', product: product %}
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>

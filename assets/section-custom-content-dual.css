@@ -174,13 +174,34 @@
   margin-top: 1.6rem;
 }
 
-/* Button styles - ensure always 100% opacity */
+/* Essential button base styles */
 .custom-dual__button .button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background-color: transparent;
+  color: inherit;
+  transition: all 0.2s ease;
   opacity: 1 !important;
+  min-height: auto;
+  white-space: nowrap;
 }
 
 .custom-dual__button .button:hover {
   opacity: 1 !important;
+  text-decoration: none;
+}
+
+.custom-dual__button .button:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 /* Mobile responsive design */
@@ -333,6 +354,7 @@
 .custom-dual__content--layout-between .custom-dual__text-content {
   display: flex;
   flex-direction: column;
+  line-height: 1.4;
   margin-top: auto;
 }
 

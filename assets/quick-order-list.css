@@ -404,8 +404,7 @@ quick-order-list .pagination-wrapper {
     display: grid;
     grid-template-columns: 4.5rem 1fr;
     grid-template-rows: repeat(2, auto);
-    gap: 1.5rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 0rem;
   }
 
   .variant-item--no-media {

@@ -32,12 +32,12 @@
   {%- liquid
     assign ratio = 1
     assign primary_media = card_product.featured_media
-    
+
     # For women's collections, use second image as primary if it exists
     if card_product.media[1] != null
       assign primary_media = card_product.media[1]
     endif
-    
+
     if primary_media and media_aspect_ratio == 'portrait'
       assign ratio = 0.8
     elsif primary_media and media_aspect_ratio == 'adapt'
@@ -90,14 +90,14 @@
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
-              {%- if show_secondary_image -%}
+              {%- if card_product.media.size > 1 -%}
                 {%- assign hover_media = card_product.featured_media -%}
                 {%- if card_product.media[1] != null and card_product.featured_media != card_product.media[1] -%}
                   {%- assign hover_media = card_product.featured_media -%}
                 {%- elsif card_product.media[2] != null -%}
                   {%- assign hover_media = card_product.media[2] -%}
                 {%- endif -%}
-                
+
                 {%- if hover_media != null and hover_media != primary_media -%}
                   <img
                     srcset="
@@ -637,4 +637,4 @@
       </div>
     </div>
   </div>
-{%- endif -%} 
+{%- endif -%}

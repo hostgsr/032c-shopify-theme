@@ -7,6 +7,29 @@ class CartDrawer extends HTMLElement {
     this.setHeaderCartIconAccessibility();
   }
 
+  cartUpdateUnsubscriber = undefined;
+
+  connectedCallback() {
+    // Subscribe to cart updates to handle empty state changes
+    this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+      // Don't handle updates from cart-drawer-items as they're handled separately
+      if (event.source === 'cart-items') {
+        return;
+      }
+      
+      // Update empty state based on cart data
+      if (event.cartData && typeof event.cartData.item_count !== 'undefined') {
+        this.classList.toggle('is-empty', event.cartData.item_count === 0);
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.cartUpdateUnsubscriber) {
+      this.cartUpdateUnsubscriber();
+    }
+  }
+
   setHeaderCartIconAccessibility() {
     const cartLink = document.querySelector('#cart-icon-bubble');
     if (!cartLink) return;
@@ -29,6 +52,13 @@ class CartDrawer extends HTMLElement {
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
+    
+    // Force refresh cart drawer content when opening to ensure it's up to date
+    const cartDrawerItems = this.querySelector('cart-drawer-items');
+    if (cartDrawerItems && typeof cartDrawerItems.onCartUpdate === 'function') {
+      cartDrawerItems.onCartUpdate();
+    }
+    
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');

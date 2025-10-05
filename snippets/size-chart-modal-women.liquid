@@ -1,0 +1,252 @@
+{% comment %}
+  Renders women's size chart modal
+
+  Usage:
+  {% render 'size-chart-modal-women' %}
+{% endcomment %}
+
+<div class="size-chart-modal" id="SizeChartModalWomen" style="display: none;">
+  <div class="size-chart-modal__overlay">
+    <div class="size-chart-modal__content">
+      <div class="size-chart-modal__header">
+        <h2 class="size-chart-modal__title">Size Guide: Women Ready-to-Wear</h2>
+        <button class="size-chart-modal__close" type="button" aria-label="Close size chart">
+          <span class="svg-wrapper">
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </span>
+        </button>
+      </div>
+
+      <div class="size-chart-modal__body">
+        <div class="size-chart-modal__toggle">
+          <div class="size-chart-toggle">
+            <button class="size-chart-toggle__btn size-chart-toggle__btn--active" data-unit="cm">CM</button>
+            <button class="size-chart-toggle__btn" data-unit="in">INCHES</button>
+          </div>
+        </div>
+
+        <!-- Women's Size Chart -->
+        <div class="size-chart-table-wrapper">
+          <h3 class="size-chart-table__title">SIZE GUIDE: WOMEN READY-TO-WEAR</h3>
+          <table class="size-chart-table">
+            <thead>
+              <tr>
+                <th>SIZE</th>
+                <th>32</th>
+                <th>34</th>
+                <th>36</th>
+                <th>38</th>
+                <th>40</th>
+                <th>42</th>
+                <th>44</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>SIZE (LETTERS)</strong></td>
+                <td>XXS</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
+              </tr>
+              <tr class="size-chart-row--cm">
+                <td><strong>CHEST (A), cm</strong></td>
+                <td>74</td>
+                <td>78</td>
+                <td>82</td>
+                <td>86</td>
+                <td>90</td>
+                <td>94</td>
+                <td>98</td>
+              </tr>
+              <tr class="size-chart-row--cm">
+                <td><strong>WAIST (B), cm</strong></td>
+                <td>60</td>
+                <td>64</td>
+                <td>66</td>
+                <td>70</td>
+                <td>74</td>
+                <td>78</td>
+                <td>82</td>
+              </tr>
+              <tr class="size-chart-row--cm">
+                <td><strong>HIPS (C), cm</strong></td>
+                <td>86</td>
+                <td>90</td>
+                <td>94</td>
+                <td>98</td>
+                <td>102</td>
+                <td>106</td>
+                <td>110</td>
+              </tr>
+              <tr class="size-chart-row--cm">
+                <td><strong>INSEAM (D), cm</strong></td>
+                <td>80</td>
+                <td>81</td>
+                <td>82</td>
+                <td>83</td>
+                <td>84</td>
+                <td>85</td>
+                <td>86</td>
+              </tr>
+              <tr class="size-chart-row--in" style="display: none;">
+                <td><strong>CHEST (A), in</strong></td>
+                <td>29.1</td>
+                <td>30.7</td>
+                <td>32.3</td>
+                <td>33.9</td>
+                <td>35.4</td>
+                <td>37</td>
+                <td>38.6</td>
+              </tr>
+              <tr class="size-chart-row--in" style="display: none;">
+                <td><strong>WAIST (B), in</strong></td>
+                <td>23.6</td>
+                <td>25.2</td>
+                <td>26</td>
+                <td>27.6</td>
+                <td>29.1</td>
+                <td>30.7</td>
+                <td>32.3</td>
+              </tr>
+              <tr class="size-chart-row--in" style="display: none;">
+                <td><strong>HIPS (C), in</strong></td>
+                <td>33.9</td>
+                <td>35.4</td>
+                <td>37</td>
+                <td>38.6</td>
+                <td>40.2</td>
+                <td>41.7</td>
+                <td>43.3</td>
+              </tr>
+              <tr class="size-chart-row--in" style="display: none;">
+                <td><strong>INSEAM (D), in</strong></td>
+                <td>31.5</td>
+                <td>31.9</td>
+                <td>32.3</td>
+                <td>32.7</td>
+                <td>33.1</td>
+                <td>33.5</td>
+                <td>33.9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Size Conversion Table -->
+        <div class="size-chart-table-wrapper">
+          <h3 class="size-chart-table__title">SIZE CONVERSION</h3>
+          <table class="size-chart-table">
+            <thead>
+              <tr>
+                <th>SIZE</th>
+                <th>32</th>
+                <th>34</th>
+                <th>36</th>
+                <th>38</th>
+                <th>40</th>
+                <th>42</th>
+                <th>44</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>SIZE (LETTERS)</strong></td>
+                <td>XXS</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
+              </tr>
+              <tr>
+                <td><strong>DENIM</strong></td>
+                <td>22-24</td>
+                <td>25-26</td>
+                <td>27-28</td>
+                <td>28-29</td>
+                <td>30-31</td>
+                <td>32-33</td>
+                <td>34-35</td>
+              </tr>
+              <tr>
+                <td><strong>UK</strong></td>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><strong>US</strong></td>
+                <td>-</td>
+                <td>2</td>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><strong>FR</strong></td>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>38</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+              </tr>
+              <tr>
+                <td><strong>IT</strong></td>
+                <td>38</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+                <td>46</td>
+                <td>48</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <td><strong>JP</strong></td>
+                <td>3</td>
+                <td>5</td>
+                <td>7</td>
+                <td>9</td>
+                <td>11</td>
+                <td>13</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td><strong>KR</strong></td>
+                <td>44</td>
+                <td>55</td>
+                <td>66</td>
+                <td>77</td>
+                <td>88</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Size Chart Diagram -->
+        <div class="size-chart-diagram">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1018/1547/files/Bildschirmfoto_2025-10-05_um_15.02.47.png?v=1759669400"
+            alt="Size Chart Measurement Guide"
+            width="600"
+            height="400"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

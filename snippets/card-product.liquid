@@ -83,7 +83,7 @@
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
-              {%- if card_product.media[1] != null and show_secondary_image -%}
+              {%- if card_product.media[1] != null -%}
                 <img
                   srcset="
                     {%- if card_product.media[1].width >= 165 -%}{{ card_product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
@@ -205,6 +205,108 @@
             {%- endif -%}
 
             {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+
+            <!-- Hover Quick Add Overlay positioned in content area -->
+            {% if quick_add == 'standard' %}
+              <div
+                class="quick-add-hover-overlay"
+                id="hover-overlay-{{ section_id }}-{{ card_product.id }}"
+                data-product-id="{{ card_product.id }}"
+                data-product-handle="{{ card_product.handle }}"
+              >
+                {%- if card_product.variants_count > 1 -%}
+                  {%- comment -%} Show size/variant buttons {%- endcomment -%}
+                  <div class="quick-add-hover-variants">
+                    {%- for option in card_product.options_with_values -%}
+                      {%- if option.name contains 'Size' or option.name contains 'size' -%}
+                        <div class="hover-variant-option">
+                          <div class="hover-variant-buttons">
+                            {%- for value in option.values -%}
+                              {%- assign variant_available = false -%}
+                              {%- for variant in card_product.variants -%}
+                                {%- if variant.option1 == value
+                                  or variant.option2 == value
+                                  or variant.option3 == value
+                                -%}
+                                  {%- if variant.available -%}
+                                    {%- assign variant_available = true -%}
+                                    {%- break -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                              <button
+                                type="button"
+                                class="hover-variant-btn{% unless variant_available %} hover-variant-btn--unavailable{% endunless %}"
+                                data-variant-option="{{ option.name }}"
+                                data-variant-value="{{ value }}"
+                                data-product-id="{{ card_product.id }}"
+                                data-section-id="{{ section_id }}"
+                                {% unless variant_available %}
+                                  disabled
+                                {% endunless %}
+                              >
+                                {{ value }}
+                              </button>
+                            {%- endfor -%}
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                    <button
+                      type="button"
+                      class="hover-add-to-cart-btn button button--secondary"
+                      data-product-id="{{ card_product.id }}"
+                      data-section-id="{{ section_id }}"
+                      data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                      disabled
+                    >
+                      {{ 'products.product.choose_options' | t }}
+                    </button>
+                  </div>
+                {%- else -%}
+                  {%- comment -%} Show direct add to cart button {%- endcomment -%}
+                  <div class="quick-add-hover-single">
+                    <product-form data-section-id="{{ section.id }}">
+                      {%-
+                        form 'product',
+                        card_product,
+                        id: 'hover-' | append: product_form_id,
+                        class: 'form hover-product-form',
+                        novalidate: 'novalidate',
+                        data-type: 'add-to-cart-form'
+                      -%}
+                        <input
+                          type="hidden"
+                          name="id"
+                          value="{{ card_product.selected_or_first_available_variant.id }}"
+                          class="product-variant-id"
+                          {% if card_product.selected_or_first_available_variant.available == false %}
+                            disabled
+                          {% endif %}
+                        >
+                        <button
+                          type="submit"
+                          name="add"
+                          class="hover-add-to-cart-btn button button--secondary"
+                          data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                          {% if card_product.selected_or_first_available_variant.available == false %}
+                            disabled
+                          {% endif %}
+                        >
+                          {%- if card_product.selected_or_first_available_variant.available -%}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {%- else -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- endif -%}
+                          {%- render 'loading-spinner' -%}
+                        </button>
+                      {%- endform -%}
+                    </product-form>
+                  </div>
+                {%- endif -%}
+              </div>
+            {% endif %}
+
             {%- if card_product.quantity_price_breaks_configured? -%}
               {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                 {% liquid
@@ -290,7 +392,7 @@
         </div>
         {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
         {% if quick_add == 'standard' %}
-          <div class="quick-add no-js-hidden">
+          <div class="quick-add no-js-hidden" style="display: none !important;">
             {%- liquid
               assign qty_rules = false
               if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
@@ -388,6 +490,7 @@
               </product-form>
             {%- endif -%}
           </div>
+
         {% elsif quick_add == 'bulk' %}
           {% if card_product.variants_count == 1 %}
             <quick-add-bulk

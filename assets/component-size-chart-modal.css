@@ -1,0 +1,268 @@
+/* Size Chart Modal */
+.size-chart-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.size-chart-modal.is-open {
+  opacity: 1;
+}
+
+.size-chart-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
+}
+
+.size-chart-modal__content {
+  background: white;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.size-chart-modal.is-open .size-chart-modal__content {
+  transform: translateX(0);
+}
+
+/* Mobile: Full width */
+@media screen and (max-width: 749px) {
+  .size-chart-modal__content {
+    width: 100%;
+  }
+}
+
+/* Desktop: 50% width */
+@media screen and (min-width: 750px) {
+  .size-chart-modal__content {
+    width: 50%;
+  }
+}
+
+.size-chart-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.size-chart-modal__title {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.size-chart-modal__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.size-chart-modal__close:hover {
+  background-color: #f5f5f5;
+}
+
+.size-chart-modal__close .svg-wrapper {
+  width: 2rem;
+  height: 2rem;
+}
+
+.size-chart-modal__body {
+  padding: 2rem;
+}
+
+.size-chart-modal__intro {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.size-chart-modal__intro p {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #000;
+  line-height: 1.5;
+}
+
+/* Toggle Buttons */
+.size-chart-modal__toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.size-chart-toggle {
+  display: flex;
+  background: white;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 0.4rem;
+}
+
+.size-chart-toggle__btn {
+  background: none;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: #000;
+}
+
+.size-chart-toggle__btn--active {
+  background: #000;
+  color: white;
+}
+
+
+
+/* Tables */
+.size-chart-table-wrapper {
+  margin-bottom: 3rem;
+}
+
+.size-chart-table__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.size-chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  color: #000;
+}
+
+.size-chart-table th,
+.size-chart-table td {
+  padding: 1rem 0.8rem;
+  text-align: center;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.size-chart-table th {
+  background: #f8f8f8;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+  color: #000;
+}
+
+.size-chart-table td:first-child,
+.size-chart-table th:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.size-chart-table--mapping {
+  margin-bottom: 2rem;
+}
+
+.size-chart-table--mapping th,
+.size-chart-table--mapping td {
+  padding: 0.8rem;
+}
+
+/* Responsive table adjustments */
+@media screen and (max-width: 749px) {
+  .size-chart-modal__body {
+    padding: 1.5rem;
+  }
+  
+  .size-chart-modal__header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .size-chart-modal__title {
+    font-size: 2rem;
+  }
+  
+  .size-chart-table {
+    font-size: 1.1rem;
+  }
+  
+  .size-chart-table th,
+  .size-chart-table td {
+    padding: 0.8rem 0.5rem;
+  }
+  
+  .size-chart-table th {
+    font-size: 1rem;
+  }
+}
+
+/* Size Chart Button */
+.size-chart-button {
+  margin-bottom: 0rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.size-chart-button span {
+  display: inline-block;
+  text-decoration: underline;
+
+  
+}
+
+.size-chart-button span:hover {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 749px) {
+  .size-chart-button span {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.4rem;
+  }
+}
+
+/* Size Chart Diagram */
+.size-chart-diagram {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.size-chart-diagram img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #000;
+}
