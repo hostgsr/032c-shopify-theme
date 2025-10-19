@@ -235,7 +235,7 @@
   margin-bottom: 0rem;
   text-align: left;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   cursor: pointer;
 }
 

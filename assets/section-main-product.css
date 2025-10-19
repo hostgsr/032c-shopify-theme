@@ -63,6 +63,10 @@ product-info {
     padding: 0 0 0 5rem;
   }
 
+  .product__info-wrapper h2.h1{
+    font-size: 22px!important;
+  }
+
   .product__info-wrapper--extra-padding {
     padding: 0 0 0 8rem;
   }
@@ -88,16 +92,16 @@ product-info {
   }
 }
 
-@media screen and (min-width: 990px) {
+@media screen and (min-width: 756px) {
   .product--large:not(.product--no-media) .product__media-wrapper {
-    max-width: 65%;
-    width: calc(65% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--large:not(.product--no-media) .product__info-wrapper {
     padding: 0 2rem 0 2rem;
-    max-width: 35%;
-    width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--large:not(.product--no-media).product--right .product__info-wrapper {
@@ -243,6 +247,22 @@ product-info {
 }
 
 /* Product info */
+.product__info-container {
+  margin-top: 0;
+  padding: 0 10px;
+}
+
+@media screen and (min-width: 750px) {
+  .product__info-container {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .product__info-container {
+    padding-top: 25%;
+  }
+}
 
 .product__info-container > * + * {
 }
@@ -577,6 +597,11 @@ pickup-availability-drawer,
   font-weight: 600;
 }
 
+/* Hide mobile description on desktop */
+.product__description--mobile {
+  display: none;
+}
+
 .product--no-media .product__title,
 .product--no-media .product__text,
 .product--no-media .product__tax,
@@ -665,6 +690,17 @@ pickup-availability-drawer,
     margin-left: -2.5rem;
     margin-bottom: 3rem;
     width: calc(100% + 4rem);
+  }
+
+  /* Hide original description on mobile - it will be shown after buy buttons */
+  .product__description {
+    display: none;
+  }
+
+  /* Show mobile description after buy buttons */
+  .product__description--mobile {
+    display: block;
+    margin: 1rem 0;
   }
 
   .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
@@ -1612,23 +1648,19 @@ pickup-availability-drawer,
 }
 
 .product-media-container.constrain-height.media-fit-contain {
-  --contained-width: calc(var(--constrained-height) * var(--aspect-ratio));
-  width: min(var(--contained-width), 100%);
+ 
   border: 0px solid #000!important;
 }
 
 .product-media-container .media {
-  padding-top: var(--ratio-percent);
 }
 
 .product-media-container.constrain-height .media {
-  padding-top: min(var(--constrained-height), var(--ratio-percent));
 }
 
 /* Ensure media containers have proper dimensions for 2-column grid */
 @media screen and (min-width: 750px) {
   .product__media-list .product-media-container .media {
-    padding-top: var(--ratio-percent) !important;
     position: relative !important;
     display: block !important;
   }

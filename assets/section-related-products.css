@@ -2,6 +2,12 @@
   display: block;
 }
 
+@media screen and (max-width: 749px) {
+  .related-products {
+    padding: 0 10px;
+  }
+}
+
 .related-products__heading {
   margin: 0 0 3rem;
 }

@@ -4,7 +4,6 @@ class MediaGalleryWithThumbnails extends HTMLElement {
     this.currentGroup = 1;
     this.currentMobileIndex = 1;
     this.mediaCount = parseInt(this.dataset.mediaCount) || 0;
-    this.thumbnailGroups = Math.ceil(this.mediaCount / 2);
     
     this.init();
   }
@@ -20,8 +19,8 @@ class MediaGalleryWithThumbnails extends HTMLElement {
     thumbnailButtons.forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
-        const groupNumber = parseInt(button.dataset.group);
-        this.showGroup(groupNumber);
+        const mediaPosition = parseInt(button.dataset.mediaPosition);
+        this.scrollToImage(mediaPosition);
       });
     });
 
@@ -35,6 +34,26 @@ class MediaGalleryWithThumbnails extends HTMLElement {
       });
     });
 
+    // Mobile arrow navigation
+    const prevArrow = this.querySelector('.media-gallery-thumbnails__mobile-arrow--prev');
+    const nextArrow = this.querySelector('.media-gallery-thumbnails__mobile-arrow--next');
+    
+    if (prevArrow) {
+      prevArrow.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showMobileImage(Math.max(1, this.currentMobileIndex - 1));
+      });
+    }
+    
+    if (nextArrow) {
+      nextArrow.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showMobileImage(Math.min(this.mediaCount, this.currentMobileIndex + 1));
+      });
+    }
+
     // Keyboard navigation
     this.addEventListener('keydown', this.handleKeydown.bind(this));
 
@@ -43,47 +62,58 @@ class MediaGalleryWithThumbnails extends HTMLElement {
   }
 
   initializeGallery() {
-    // Show first group on desktop
-    this.showGroup(1);
-    
-    // Show first image on mobile
-    this.showMobileImage(1);
-  }
-
-  showGroup(groupNumber) {
-    if (groupNumber < 1 || groupNumber > this.thumbnailGroups) return;
-
-    this.currentGroup = groupNumber;
-
-    // Calculate which images to show (2 per group)
-    const startPosition = (groupNumber - 1) * 2 + 1;
-    const endPosition = Math.min(startPosition + 1, this.mediaCount);
-
-    // Hide all desktop images
+    // Show all images on desktop
     const allItems = this.querySelectorAll('.media-gallery-thumbnails__item');
     allItems.forEach(item => {
-      item.classList.remove('is-active');
+      item.classList.add('is-active');
     });
-
-    // Show images for current group
-    for (let i = startPosition; i <= endPosition; i++) {
-      const item = this.querySelector(`[data-media-position="${i}"]`);
-      if (item) {
-        item.classList.add('is-active');
+    
+    // Check mobile elements
+    const mobileGallery = this.querySelector('.media-gallery-thumbnails__mobile');
+    const mobileItems = this.querySelectorAll('.media-gallery-thumbnails__mobile-item');
+    
+    // Initialize mobile gallery - show first image
+    this.showMobileImage(1);
+    
+    // Ensure mobile layout is visible on mobile devices
+    if (window.innerWidth < 750) {
+      if (mobileGallery) {
+        mobileGallery.style.display = 'block';
       }
     }
+  }
+
+  scrollToImage(mediaPosition) {
+    if (mediaPosition < 1 || mediaPosition > this.mediaCount) return;
+
+    this.currentGroup = mediaPosition;
+
+    // Find the grid container and target image
+    const grid = this.querySelector('.media-gallery-thumbnails__grid');
+    const targetItem = this.querySelector(`.media-gallery-thumbnails__item[data-media-position="${mediaPosition}"]`);
+    
+    if (!targetItem || !grid) return;
+
+    // Clone the target item
+    const clonedItem = targetItem.cloneNode(true);
+    
+    // Remove the original
+    targetItem.remove();
+    
+    // Insert the clone at the beginning
+    grid.insertBefore(clonedItem, grid.firstChild);
 
     // Update thumbnail navigation active state
     const thumbnailButtons = this.querySelectorAll('.media-gallery-thumbnails__nav-item');
     thumbnailButtons.forEach(button => {
       button.classList.remove('is-active');
-      if (parseInt(button.dataset.group) === groupNumber) {
+      if (parseInt(button.dataset.mediaPosition) === mediaPosition) {
         button.classList.add('is-active');
       }
     });
 
     // Update gallery status for screen readers
-    this.updateGalleryStatus(`Showing images ${startPosition} to ${endPosition} of ${this.mediaCount}`);
+    this.updateGalleryStatus(`Viewing image ${mediaPosition} of ${this.mediaCount}`);
   }
 
   showMobileImage(imageIndex) {
@@ -126,7 +156,7 @@ class MediaGalleryWithThumbnails extends HTMLElement {
       case 'ArrowLeft':
         event.preventDefault();
         if (window.innerWidth >= 750) {
-          this.showGroup(Math.max(1, this.currentGroup - 1));
+          this.scrollToImage(Math.max(1, this.currentGroup - 1));
         } else {
           this.showMobileImage(Math.max(1, this.currentMobileIndex - 1));
         }
@@ -134,7 +164,7 @@ class MediaGalleryWithThumbnails extends HTMLElement {
       case 'ArrowRight':
         event.preventDefault();
         if (window.innerWidth >= 750) {
-          this.showGroup(Math.min(this.thumbnailGroups, this.currentGroup + 1));
+          this.scrollToImage(Math.min(this.mediaCount, this.currentGroup + 1));
         } else {
           this.showMobileImage(Math.min(this.mediaCount, this.currentMobileIndex + 1));
         }
@@ -142,7 +172,7 @@ class MediaGalleryWithThumbnails extends HTMLElement {
       case 'Home':
         event.preventDefault();
         if (window.innerWidth >= 750) {
-          this.showGroup(1);
+          this.scrollToImage(1);
         } else {
           this.showMobileImage(1);
         }
@@ -150,7 +180,7 @@ class MediaGalleryWithThumbnails extends HTMLElement {
       case 'End':
         event.preventDefault();
         if (window.innerWidth >= 750) {
-          this.showGroup(this.thumbnailGroups);
+          this.scrollToImage(this.mediaCount);
         } else {
           this.showMobileImage(this.mediaCount);
         }
@@ -209,7 +239,14 @@ class MediaGalleryWithThumbnails extends HTMLElement {
   handleResize() {
     // Reset to appropriate view based on screen size
     if (window.innerWidth >= 750) {
-      this.showGroup(this.currentGroup);
+      // On desktop, all images are visible, just update thumbnail state
+      const thumbnailButtons = this.querySelectorAll('.media-gallery-thumbnails__nav-item');
+      thumbnailButtons.forEach(button => {
+        button.classList.remove('is-active');
+        if (parseInt(button.dataset.mediaPosition) === this.currentGroup) {
+          button.classList.add('is-active');
+        }
+      });
     } else {
       this.showMobileImage(this.currentMobileIndex);
     }
