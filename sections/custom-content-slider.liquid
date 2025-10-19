@@ -96,6 +96,15 @@
         {%- endif -%}
       }
     {%- endif -%}
+
+    /* Pagination dot color for this slide */
+    #CustomSlider-{{ section.id }}.slide-{{ forloop.index0 }}-active .custom-slider__dot--active {
+      {%- if block.settings.text_color != blank -%}
+        background: {{ block.settings.text_color }};
+      {%- else -%}
+        background: white;
+      {%- endif -%}
+    }
   {%- endfor -%}
 {%- endstyle -%}
 

@@ -1,0 +1,302 @@
+{{ 'section-lookbook.css' | asset_url | stylesheet_tag }}
+{{ 'section-lookbook.js' | asset_url | script_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #Lookbook-{{ section.id }} {
+    {%- if section.settings.background_color != blank -%}
+      background-color: {{ section.settings.background_color }};
+    {%- endif -%}
+  }
+
+  #Lookbook-{{ section.id }} .lookbook__heading {
+    {%- if section.settings.heading_color != blank -%}
+      color: {{ section.settings.heading_color }};
+    {%- endif -%}
+  }
+
+  #Lookbook-{{ section.id }} .lookbook__image-title {
+    {%- if section.settings.text_color != blank -%}
+      color: {{ section.settings.text_color }};
+    {%- endif -%}
+  }
+
+  #Lookbook-{{ section.id }} .lookbook__grid {
+    --columns-mobile: {{ section.settings.columns_mobile }};
+    --columns-desktop: {{ section.settings.columns_desktop }};
+  }
+{%- endstyle -%}
+
+<div
+  id="Lookbook-{{ section.id }}"
+  class="lookbook color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="lookbook__header">
+        <h2 class="lookbook__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading | escape }}
+        </h2>
+      </div>
+    {%- endif -%}
+
+    <div class="lookbook__grid">
+      {%- for block in section.blocks -%}
+        <div class="lookbook__item" {{ block.shopify_attributes }}>
+          <div class="lookbook__image-wrapper" data-lightbox-trigger="{{ forloop.index0 }}">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                class="lookbook__image"
+                loading="lazy"
+                data-lightbox-image="{{ block.settings.image | image_url: width: 1200 }}"
+                data-lightbox-title="{{ block.settings.title | escape }}"
+              >
+            {%- else -%}
+              <div class="lookbook__placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if block.settings.title != blank -%}
+            <div class="lookbook__content">
+              <h3 class="lookbook__image-title">
+                {{ block.settings.title | escape }}
+              </h3>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lookbook-lightbox" class="lookbook-lightbox" style="display: none;">
+  <div class="lookbook-lightbox__overlay"></div>
+  <div class="lookbook-lightbox__content">
+    <button class="lookbook-lightbox__close" aria-label="Close lightbox">&times;</button>
+    <div class="lookbook-lightbox__image-wrapper">
+      <img class="lookbook-lightbox__image" src="" alt="">
+      <div class="lookbook-lightbox__controls">
+        <button class="lookbook-lightbox__prev" aria-label="Previous image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <div class="lookbook-lightbox__title"></div>
+        <button class="lookbook-lightbox__next" aria-label="Next image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Lookbook",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "info": "Override color scheme background"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "info": "Override color scheme text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Image title color",
+      "info": "Override color scheme text"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Mobile columns",
+      "default": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Image title",
+          "default": "Image title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook",
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 1"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 2"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 3"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 4"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 5"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "title": "Look 6"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

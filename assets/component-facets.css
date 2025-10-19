@@ -1,5 +1,5 @@
 .facets-container {
-  display: none;
+  display: grid;
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(2, auto);
   padding-top: 1rem;
@@ -168,6 +168,12 @@
   gap: 0 3.5rem;
   grid-template-columns: 1fr max-content max-content;
   margin-bottom: 0.5rem;
+}
+
+.facets__form *{
+  color:black;
+  border-color:black!important;
+  
 }
 
 .facets__wrapper {

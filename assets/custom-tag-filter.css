@@ -1,23 +1,30 @@
 /* Custom Tag Filter Styles */
 
+/* Filter Component Wrapper */
+.custom-tag-filter-wrapper {
+  width: 100%;
+  margin-top: 1rem;
+}
+
 /* Filter Button */
 .collection-hero__filter-wrapper {
   margin-top: 1.5rem;
   display: flex;
   justify-content: flex-start;
+  flex-direction: column;
   position: relative;
 }
 
 .collection-hero__filter-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 0;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: 0.375rem;
   color: var(--color-foreground);
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -174,12 +181,11 @@
 
 .custom-tag-button {
   padding: 0.5rem 1rem;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 1.5rem;
+  background-color: transparent;
+  border: none;
   color: var(--color-foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
@@ -187,16 +193,14 @@
 }
 
 .custom-tag-button:hover {
-  background-color: var(--color-background-hover);
-  border-color: var(--color-border-hover);
+  opacity: 0.7;
 }
 
 .custom-tag-button.active {
-  background-color: var(--color-accent);
-  color: var(--color-accent-foreground);
-  border-color: var(--color-accent);
+  font-weight: 400;
   text-decoration: underline;
-  font-weight: 600;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
 }
 
 .custom-tag-filter-actions {
@@ -263,7 +267,7 @@
   
   .custom-tag-button {
     padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
+    font-size: 14px;
   }
   
   .custom-tag-filter-actions {

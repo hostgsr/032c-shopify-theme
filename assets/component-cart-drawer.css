@@ -417,6 +417,7 @@ cart-drawer-items {
 
 .cart-drawer .cart__checkout-button {
   max-width: none;
+  background-color: black;
 }
 
 .drawer__footer .cart__dynamic-checkout-buttons {

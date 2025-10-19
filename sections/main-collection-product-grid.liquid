@@ -100,9 +100,7 @@
 
     <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
       {{ 'component-facets.css' | asset_url | stylesheet_tag }}
-      {{ 'custom-tag-filter.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
-      <script src="{{ 'custom-tag-filter.js' | asset_url }}" defer="defer"></script>
       {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
         <aside
           aria-labelledby="verticalTitle"
@@ -168,7 +166,6 @@
                       data-cascade
                       style="--animation-order: {{ forloop.index }};"
                     {% endif %}
-                    data-product-tags="{{ product.tags | join: ',' | downcase }}"
                   >
                     {% render 'card-product',
                       card_product: product,
@@ -212,7 +209,7 @@
       "min": 8,
       "max": 36,
       "step": 4,
-      "default": 16,
+      "default": 36,
       "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
     },
     {

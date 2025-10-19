@@ -14,13 +14,62 @@
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 
 {%- if paginate.parts.size > 0 -%}
+  {%- comment -%} Check if we're on a tagged collection URL {%- endcomment -%}
+  {%- assign current_url = request.path -%}
+  {%- assign url_parts = current_url | split: '/' -%}
+  {%- assign has_tag_in_url = false -%}
+  {%- assign base_path = '' -%}
+
+  {%- comment -%} Check if URL has format /collections/handle/tag {%- endcomment -%}
+  {%- assign part_count = 0 -%}
+  {%- for part in url_parts -%}
+    {%- unless part == blank -%}
+      {%- assign part_count = part_count | plus: 1 -%}
+    {%- endunless -%}
+  {%- endfor -%}
+
+  {%- if part_count > 2 and current_url contains '/collections/' -%}
+    {%- assign has_tag_in_url = true -%}
+    {%- assign base_path = current_url -%}
+  {%- endif -%}
+
+  {%- comment -%} Preserve current filter parameters {%- endcomment -%}
+  {%- assign current_filters = '' -%}
+  {%- for filter in collection.filters -%}
+    {%- for value in filter.values -%}
+      {%- if value.active -%}
+        {%- if current_filters != '' -%}
+          {%- assign current_filters = current_filters | append: '&' -%}
+        {%- endif -%}
+        {%- assign current_filters = current_filters | append: filter.param_name | append: '=' | append: value.value -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+
+  {%- if current_filters != '' -%}
+    {%- assign filter_prefix = '?' -%}
+    {%- if paginate.previous.url contains '?' -%}
+      {%- assign filter_prefix = '&' -%}
+    {%- endif -%}
+  {%- endif -%}
+
   <div class="pagination-wrapper" data-page="{{ paginate.current_page }}">
     <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
       <ul class="pagination__list list-unstyled" role="list">
         {%- if paginate.previous -%}
           <li>
+            {%- comment -%} Pagination URLs are relative like "?page=2", prepend base path if tagged {%- endcomment -%}
+            {%- if has_tag_in_url -%}
+              {%- if paginate.previous.url contains '/' -%}
+                {%- assign prev_url = paginate.previous.url -%}
+              {%- else -%}
+                {%- assign prev_url = base_path | append: paginate.previous.url -%}
+              {%- endif -%}
+            {%- else -%}
+              {%- assign prev_url = paginate.previous.url | append: filter_prefix | append: current_filters -%}
+            {%- endif -%}
             <a
-              href="{{ paginate.previous.url }}{{ anchor }}"
+              href="{{ prev_url }}{{ anchor }}"
               class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce"
               aria-label="{{ 'general.pagination.previous' | t }}"
             >
@@ -34,8 +83,17 @@
         {%- for part in paginate.parts -%}
           <li>
             {%- if part.is_link -%}
+              {%- if has_tag_in_url -%}
+                {%- if part.url contains '/' -%}
+                  {%- assign part_url = part.url -%}
+                {%- else -%}
+                  {%- assign part_url = base_path | append: part.url -%}
+                {%- endif -%}
+              {%- else -%}
+                {%- assign part_url = part.url | append: filter_prefix | append: current_filters -%}
+              {%- endif -%}
               <a
-                href="{{ part.url }}{{ anchor }}"
+                href="{{ part_url }}{{ anchor }}"
                 class="pagination__item link"
                 aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
               >
@@ -61,8 +119,17 @@
 
         {%- if paginate.next -%}
           <li>
+            {%- if has_tag_in_url -%}
+              {%- if paginate.next.url contains '/' -%}
+                {%- assign next_url = paginate.next.url -%}
+              {%- else -%}
+                {%- assign next_url = base_path | append: paginate.next.url -%}
+              {%- endif -%}
+            {%- else -%}
+              {%- assign next_url = paginate.next.url | append: filter_prefix | append: current_filters -%}
+            {%- endif -%}
             <a
-              href="{{ paginate.next.url }}{{ anchor }}"
+              href="{{ next_url }}{{ anchor }}"
               class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce"
               aria-label="{{ 'general.pagination.next' | t }}"
             >

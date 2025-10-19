@@ -300,11 +300,10 @@
 /* Pagination dots */
 .custom-slider__pagination {
   position: absolute;
-
+  display: flex;
   bottom: 2rem;
-  left: 50%;
+  right: 0%;
   transform: translateX(-50%);
-  display: none;
   gap: 0.75rem;
   z-index: 3;
 }
@@ -313,21 +312,17 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  background: transparent;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.custom-slider__dot:hover {
-  border-color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.3);
+.custom-slider__dot--active {
+  background: white;
 }
 
-.custom-slider__dot--active {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 1);
-}
+
 
 /* Navigation arrows */
 .custom-slider__arrow {
@@ -487,12 +482,6 @@
   transition: none !important;
 }
 
-/* Accessibility */
-.custom-slider__arrow:focus,
-.custom-slider__dot:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 2px;
-}
 
 /* Pause on hover */
 .custom-slider:hover .custom-slider__track {

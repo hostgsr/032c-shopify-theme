@@ -155,6 +155,12 @@ class CustomContentSlider {
       dot.classList.toggle('custom-slider__dot--active', index === this.currentSlide);
     });
     
+    // Update slider container class for active slide (for pagination dot styling)
+    for (let i = 0; i < this.totalSlides; i++) {
+      this.slider.classList.remove(`slide-${i}-active`);
+    }
+    this.slider.classList.add(`slide-${this.currentSlide}-active`);
+    
     // Update aria-labels for accessibility
     this.slides.forEach((slide, index) => {
       slide.setAttribute('aria-hidden', index !== this.currentSlide);

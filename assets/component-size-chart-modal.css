@@ -234,6 +234,8 @@
 .size-chart-button {
   margin-bottom: 0rem;
   text-align: left;
+  display: flex;
+  justify-content: flex-end;
   cursor: pointer;
 }
 
@@ -251,7 +253,7 @@
 @media screen and (max-width: 749px) {
   .size-chart-button span {
     font-size: 1.1rem;
-    padding: 0.7rem 1.4rem;
+    padding: 0;
   }
 }
 
