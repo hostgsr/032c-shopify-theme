@@ -3684,3 +3684,21 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+
+[data-product] .sls-purchase-options-container{
+  border: 1px solid #000!important;
+}
+
+.sealsubs-target-element .sls-custom-radio, .sls-option[type="radio"] + span.sls-custom-radio{
+  border: 1px solid #000!important;
+}
+
+.sealsubs-target-element .sls-option[type="radio"] + .sls-custom-radio:after{
+  box-shadow: inset 1em 1em #000!important;
+}
+
+.sls-sub-icon, .sls-more-info-container{
+  display: none!important;
+}
+

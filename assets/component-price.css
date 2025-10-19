@@ -63,10 +63,14 @@
   display: none;
 }
 
-.price--sold-out .price__badge-sold-out,
+.price--sold-out ,
 .price--on-sale .price__badge-sale,
 .volume-pricing--sale-badge .price__badge-sale {
   display: inline-block;
+}
+
+.price__badge-sold-out{
+  display: none;
 }
 
 .volume-pricing--sale-badge .price__badge-sale {

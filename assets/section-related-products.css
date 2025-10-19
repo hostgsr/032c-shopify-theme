@@ -11,3 +11,9 @@
 .related-products__heading {
   margin: 0 0 3rem;
 }
+
+@media screen and (min-width: 750px) {
+  .related-products__heading {
+    padding: 0 10px;
+  }
+}
