@@ -867,7 +867,8 @@ summary::-webkit-details-marker {
 }
 
 .title-wrapper {
-  margin-bottom: 3rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
 }
 
 .title-wrapper-with-link {
@@ -1348,10 +1349,7 @@ button.shopify-payment-button__button--unbranded {
 .shopify-challenge__button:hover::after,
 .customer button:hover::after,
 .shopify-payment-button__button--unbranded:hover::after {
-  --border-offset: 1.3px;
-  box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
-      rgba(var(--color-button-text), var(--border-opacity)),
-    0 0 0 calc(var(--buttons-border-width) + 1px) rgba(var(--color-button), var(--alpha-button-background));
+
 }
 
 .button--secondary:after {
@@ -1363,9 +1361,7 @@ button.shopify-payment-button__button--unbranded {
 .button.focused,
 .shopify-payment-button__button--unbranded:focus-visible,
 .shopify-payment-button__button--unbranded:focus {
-  outline: 0;
-  box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0 0.5rem rgba(var(--color-foreground), 0.5),
-    0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+
 }
 
 .button:focus:not(:focus-visible):not(.focused),

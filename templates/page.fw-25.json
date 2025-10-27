@@ -9,14 +9,6 @@
  */
 {
   "sections": {
-    "second_row_menu": {
-      "type": "second-row-menu",
-      "settings": {
-        "menu": "2nd-row-menu",
-        "padding_top": 12,
-        "padding_bottom": 12
-      }
-    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -264,7 +256,7 @@
         "content_layout_left": "between",
         "heading_right": "\"GHOST WRITER\" WOOL JANKER",
         "heading_size_right": "h0",
-        "text_right": "<p>Constructed from boiled wool with bound edges and front welt pockets. <br/> </p>",
+        "text_right": "<p>Constructed from boiled wool with bound edges and front welt pockets. </p>",
         "text_style_right": "body",
         "button_label_right": "SHOP NOW",
         "button_link_right": "",
@@ -293,7 +285,6 @@
     }
   },
   "order": [
-    "second_row_menu",
     "main",
     "custom_content_slider_i73npV",
     "custom_content_dual_ma4zAd",

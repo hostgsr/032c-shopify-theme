@@ -10,11 +10,6 @@
   min-height: inherit;
 }
 
-.custom-dual__container--stacked {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-}
-
 .custom-dual__column {
   position: relative;
   display: flex;
@@ -43,53 +38,35 @@
   width: 100%;
 }
 
-/* Content positioning for each column */
-.custom-dual__column--content-position-top-left .custom-dual__content {
+/* Content vertical positioning - only controls vertical alignment */
+.custom-dual__column--content-position-top .custom-dual__content {
   align-items: flex-start;
+}
+
+.custom-dual__column--content-position-middle .custom-dual__content {
+  align-items: center;
+}
+
+.custom-dual__column--content-position-bottom .custom-dual__content {
+  align-items: flex-end;
+}
+
+/* Horizontal positioning is handled by content-align classes below */
+
+/* Content horizontal alignment */
+.custom-dual__column--content-align-left .custom-dual__content {
   justify-content: flex-start;
 }
 
-.custom-dual__column--content-position-top-center .custom-dual__content {
-  align-items: flex-start;
+.custom-dual__column--content-align-center .custom-dual__content {
   justify-content: center;
 }
 
-.custom-dual__column--content-position-top-right .custom-dual__content {
-  align-items: flex-start;
+.custom-dual__column--content-align-right .custom-dual__content {
   justify-content: flex-end;
 }
 
-.custom-dual__column--content-position-middle-left .custom-dual__content {
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.custom-dual__column--content-position-middle-center .custom-dual__content {
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-dual__column--content-position-middle-right .custom-dual__content {
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.custom-dual__column--content-position-bottom-left .custom-dual__content {
-  align-items: flex-end;
-  justify-content: flex-start;
-}
-
-.custom-dual__column--content-position-bottom-center .custom-dual__content {
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.custom-dual__column--content-position-bottom-right .custom-dual__content {
-  align-items: flex-end;
-  justify-content: flex-end;
-}
-
-/* Content alignment */
+/* Text alignment within content */
 .custom-dual__column--content-align-left .custom-dual__text-wrapper {
   text-align: left;
   padding-left: 1rem;
@@ -199,16 +176,62 @@
   text-decoration: none;
 }
 
-.custom-dual__button .button:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+.custom-dual__button .button:hover {
+
+  border-color: currentColor;
 }
+
+
 
 /* Mobile responsive design */
 @media screen and (max-width: 749px) {
-  .custom-dual__container {
+  /* Only stack on mobile when stacked layout is selected */
+  .custom-dual__container--stacked {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
+  }
+
+  /* 1:1 aspect ratio for images when stacked on mobile */
+  .custom-dual--layout-stacked .custom-dual__column {
+    aspect-ratio: 1 / 1;
+    min-height: auto;
+  }
+
+  .custom-dual--layout-stacked .custom-dual__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .custom-dual--layout-stacked .custom-dual__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Override for image height on mobile - no cropping */
+  .custom-dual--image.custom-dual--layout-stacked .custom-dual__column,
+  .custom-dual--full-size.custom-dual--layout-stacked .custom-dual__column {
+    aspect-ratio: auto;
+    height: auto;
+    min-height: auto;
+  }
+
+  .custom-dual--image .custom-dual__media,
+  .custom-dual--full-size .custom-dual__media {
+    position: relative;
+    height: auto;
+  }
+
+  .custom-dual--image .custom-dual__media img,
+  .custom-dual--full-size .custom-dual__media img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    display: block;
   }
 
   .custom-dual__text-wrapper {
@@ -253,15 +276,13 @@
   .custom-dual--full {
     min-height: 100vh;
   }
-}
 
-/* Desktop specific layout for side-by-side that stacks on mobile */
-@media screen and (max-width: 749px) {
-  .custom-dual--layout-stacked .custom-dual__container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+  /* No min-height for image layout on mobile */
+  .custom-dual--image {
+    min-height: auto !important;
   }
 }
+
 
 /* Ensure proper stacking context */
 .custom-dual * {
@@ -316,6 +337,20 @@
   object-fit: cover;
 }
 
+/* Override stretch behavior for image height */
+.custom-dual--image .custom-dual__media--stretch,
+.custom-dual--full-size .custom-dual__media--stretch {
+  position: relative;
+  height: auto;
+}
+
+.custom-dual--image .custom-dual__media--stretch img,
+.custom-dual--full-size .custom-dual__media--stretch img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .custom-dual__media--center {
   position: relative;
   display: flex;
@@ -328,6 +363,20 @@
 .custom-dual__media--center img {
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
+}
+
+/* Override center behavior for image height */
+.custom-dual--image .custom-dual__media--center,
+.custom-dual--full-size .custom-dual__media--center {
+  padding: 0;
+}
+
+.custom-dual--image .custom-dual__media--center img,
+.custom-dual--full-size .custom-dual__media--center img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
   object-fit: contain;
 }
 
@@ -365,4 +414,46 @@
 .custom-dual__content--layout-between .custom-dual__button {
   margin-top: auto;
   padding-top: 1.6rem;
+}
+
+/* Full size image layout - Fit to image height */
+.custom-dual--image,
+.custom-dual--full-size {
+  min-height: auto !important;
+}
+
+.custom-dual--image .custom-dual__container,
+.custom-dual--full-size .custom-dual__container {
+  min-height: auto;
+}
+
+.custom-dual--image .custom-dual__column,
+.custom-dual--full-size .custom-dual__column {
+  height: auto;
+  min-height: auto;
+}
+
+.custom-dual--image .custom-dual__media,
+.custom-dual--full-size .custom-dual__media {
+  position: relative;
+  height: auto;
+}
+
+.custom-dual--image .custom-dual__media img,
+.custom-dual--full-size .custom-dual__media img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  position: relative;
+  display: block;
+}
+
+.custom-dual--image .custom-dual__content,
+.custom-dual--full-size .custom-dual__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 } 

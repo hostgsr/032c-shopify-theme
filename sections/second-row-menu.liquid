@@ -1,0 +1,125 @@
+{% comment %}
+  Renders a second row menu for specific pages.
+
+  Usage:
+  {% section 'second-row-menu' %}
+{% endcomment %}
+
+<style>
+  .second-row-menu {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .second-row-menu__nav {
+    display: flex;
+    padding: 0 1rem;
+    justify-content: flex-start;
+  }
+
+  .second-row-menu__nav .list-menu {
+    gap: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .second-row-menu__nav .list-menu__item {
+    padding: 0.5rem 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .second-row-menu__nav .list-menu {
+      gap: 1rem;
+    }
+  }
+</style>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.settings.menu != blank -%}
+  <div class="second-row-menu section-{{ section.id }}-padding">
+    <div class="page-width">
+      <nav class="second-row-menu__nav">
+        <ul class="list-menu list-menu--inline" role="list">
+          {%- for link in section.settings.menu.links -%}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="header__menu-item list-menu__item link link--text focus-inset"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                <span
+                  {%- if link.current %}
+                    class="header__active-menu-item"
+                  {% endif %}
+                >
+                  {{- link.title | escape -}}
+                </span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Second Row Menu",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Second Row Menu"
+    }
+  ]
+}
+{% endschema %}

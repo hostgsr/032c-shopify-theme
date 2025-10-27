@@ -77,7 +77,7 @@ class HoverQuickAdd extends HTMLElement {
       addToCartBtn.dataset.variantId = variant.id;
     } else {
       addToCartBtn.disabled = true;
-      addToCartBtn.textContent = variant ? 'Sold out' : 'Select options';
+      addToCartBtn.textContent = variant ? 'SOLD OUT' : 'Select options';
     }
   }
 

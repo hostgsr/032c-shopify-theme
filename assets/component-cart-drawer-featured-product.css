@@ -22,7 +22,7 @@
 .cart-drawer-featured-product__image {
   width: 100%;
   height: auto;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: 0rem;
   transition: transform 0.2s ease;
@@ -34,7 +34,7 @@
 
 .cart-drawer-featured-product__placeholder {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   background-color: rgba(var(--color-foreground), 0.04);
   border-radius: 0.4rem;
   display: flex;

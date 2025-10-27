@@ -605,8 +605,12 @@ quick-add-bulk .quantity__input {
   cursor: not-allowed;
   text-decoration: none;
   border: none !important;
+  text-transform: uppercase;
   outline: none !important;
 }
+
+
+
 
 /* Hide regular quick add when hover overlay is active */
 .product-card-wrapper:hover .quick-add:not(.quick-add-hover-overlay) {

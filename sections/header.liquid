@@ -74,6 +74,79 @@
       padding-top: 0.5rem;
     }
   }
+
+  .header__second-row-menu {
+    padding: 1rem 0;
+  }
+
+  .header__second-row-menu-nav {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .header__second-row-menu-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .header__second-row-menu-nav .list-menu {
+    gap: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    white-space: nowrap;
+  }
+
+  .header__second-row-menu-nav .list-menu__item {
+    padding: 0.5rem 0;
+    flex-shrink: 0;
+  }
+
+  .header__second-row-menu-nav .header__active-menu-item {
+    color: #ff0000;
+  }
+
+  .header__third-row-menu {
+    padding: 1rem 0;
+  }
+
+  .header__third-row-menu-nav {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .header__third-row-menu-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .header__third-row-menu-nav .list-menu {
+    gap: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    white-space: nowrap;
+  }
+
+  .header__third-row-menu-nav .list-menu__item {
+    padding: 0.5rem 0;
+    flex-shrink: 0;
+  }
+
+  .header__third-row-menu-nav .header__active-menu-item {
+    color: #ff0000;
+  }
+
+  @media screen and (max-width: 749px) {
+    .header__second-row-menu-nav .list-menu,
+    .header__third-row-menu-nav .list-menu {
+      gap: 1rem;
+    }
+  }
 </style>
 
 {%- style -%}
@@ -317,6 +390,81 @@
       {%- endif -%}
     </div>
   </header>
+
+  {%- comment -%} Second row menu - for all collection pages {%- endcomment -%}
+  {%- if template.name == 'collection' -%}
+    {%- assign second_row_menu = linklists['2nd-row-menu'] -%}
+    {%- if second_row_menu != blank and second_row_menu.links.size > 0 -%}
+      <div class="header__second-row-menu page-width">
+        <nav class="header__second-row-menu-nav">
+          <ul class="list-menu list-menu--inline" role="list">
+            {%- for link in second_row_menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="header__menu-item list-menu__item link link--text focus-inset"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span
+                    {%- if link.current %}
+                      class="header__active-menu-item"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Third row menu - conditional based on collection {%- endcomment -%}
+  {%- if template.name == 'collection' and collection -%}
+    {%- liquid
+      assign menu_to_show = null
+
+      if collection.handle contains 'womens-' or collection.handle == 'womens-collection'
+        assign menu_to_show = linklists['3rd-row-women']
+      elsif collection.handle contains 'mens-' or collection.handle == 'mens-collection'
+        assign menu_to_show = linklists['3rd-row-men']
+      elsif collection.handle == 'magazines'
+        assign menu_to_show = linklists['3rd-row-print']
+      endif
+    -%}
+
+    {%- if menu_to_show != blank and menu_to_show.links.size > 0 -%}
+      <div class="header__third-row-menu page-width">
+        <nav class="header__third-row-menu-nav">
+          <ul class="list-menu list-menu--inline" role="list">
+            {%- for link in menu_to_show.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="header__menu-item list-menu__item link link--text focus-inset"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span
+                    {%- if link.current %}
+                      class="header__active-menu-item"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
 </{{ header_tag }}>
 
 {%- if settings.cart_type == 'notification' -%}

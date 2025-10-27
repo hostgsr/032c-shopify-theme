@@ -352,7 +352,7 @@ a.product__text {
 .product__info-container.product__column-sticky *:not(.product-form__submit):not(.product-form__submit *) {
   font-size: 14px ;
   line-height: 1.4 !important;
-  color: #000000 !important;
+  color: #000000 ;
 }
 
 /* Preserve heading hierarchy while maintaining uniform size and black color */
@@ -399,7 +399,7 @@ a.product__text {
 .product__info-container.product__column-sticky textarea:not(.product-form__submit textarea) {
   font-size: 14px ;
   line-height: 1.4 !important;
-  color: #000000 !important;
+  color: #000000 ;
 }
 
 /* Hide quantity selector on product pages */

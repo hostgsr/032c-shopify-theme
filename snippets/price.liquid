@@ -88,6 +88,9 @@
           <span class="price-item price-item--regular">
             {{ money_price }}
           </span>
+          {%- if available == false -%}
+            <span style="color: red; margin-left: 8px; font-weight: 500;">SOLD OUT</span>
+          {%- endif -%}
         {%- endif -%}
       </div>
       <div class="price__sale">
@@ -107,9 +110,15 @@
         <span class="price-item price-item--sale price-item--last">
           {{ money_price }}
         </span>
+        {%- if available == false -%}
+          <span style="color: red; margin-left: 8px; font-weight: 500;">SOLD OUT</span>
+        {%- endif -%}
       </div>
       {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
-        {% render 'unit-price', price: product.selected_or_first_available_variant.unit_price, measurement: product.selected_or_first_available_variant.unit_price_measurement %}
+        {% render 'unit-price',
+          price: product.selected_or_first_available_variant.unit_price,
+          measurement: product.selected_or_first_available_variant.unit_price_measurement
+        %}
       {%- endif -%}
     </div>
     {%- if show_badges -%}

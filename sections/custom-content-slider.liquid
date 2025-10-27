@@ -23,6 +23,8 @@
       min-height: 700px;
     {%- elsif section.settings.height == 'full' -%}
       min-height: 100vh;
+    {%- elsif section.settings.height == 'image' -%}
+      min-height: auto;
     {%- endif -%}
   }
 
@@ -36,6 +38,8 @@
         min-height: 700px;
       {%- elsif section.settings.height == 'full' -%}
         min-height: 100vh;
+      {%- elsif section.settings.height == 'image' -%}
+        min-height: auto;
       {%- endif -%}
       {%- if block.settings.background_color != blank -%}
         background-color: {{ block.settings.background_color }};
@@ -106,11 +110,44 @@
       {%- endif -%}
     }
   {%- endfor -%}
+
+  {%- if section.settings.height == 'image' -%}
+    #CustomSlider-{{ section.id }} {
+      height: auto;
+      min-height: auto;
+    }
+
+    #CustomSlider-{{ section.id }} .custom-slide {
+      height: auto;
+      min-height: auto;
+    }
+
+    #CustomSlider-{{ section.id }} .custom-slide__media {
+      position: relative !important;
+      height: auto !important;
+    }
+
+    #CustomSlider-{{ section.id }} .custom-slide__media img,
+    #CustomSlider-{{ section.id }} .custom-slide__media video {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      position: relative !important;
+    }
+
+    #CustomSlider-{{ section.id }} .custom-slide__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 <div
   id="CustomSlider-{{ section.id }}"
-  class="custom-slider custom-slider--{{ section.settings.height }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="custom-slider custom-slider--{{ section.settings.height }}{% if section.settings.height == 'image' %} custom-slider--full-size{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
   data-autoplay="{{ section.settings.autoplay }}"
   data-autoplay-speed="{{ section.settings.autoplay_speed }}"
 >
@@ -131,7 +168,28 @@
         {% endif %}
         {{ block.shopify_attributes }}
       >
-        {%- if block.settings.image != blank -%}
+        {%- if block.settings.video_url != blank -%}
+          <div class="custom-slide__media custom-slide__media--{{ block.settings.image_behavior }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+            <video
+              class="custom-slide__video"
+              autoplay
+              muted
+              loop
+              playsinline
+              {% if slide_fetch_priority == 'high' %}
+                preload="auto"
+              {% else %}
+                preload="metadata"
+              {% endif %}
+              {% if block.settings.image != blank %}
+                poster="{{ block.settings.image | image_url: width: 1920 }}"
+              {% endif %}
+            >
+              <source src="{{ block.settings.video_url }}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        {%- elsif block.settings.image != blank -%}
           <div class="custom-slide__media custom-slide__media--{{ block.settings.image_behavior }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{
               block.settings.image
@@ -171,7 +229,7 @@
                     {% else %}
                       href="{{ block.settings.button_link }}"
                     {% endif %}
-                    class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                    class="button button--primary"
                   >
                     {{ block.settings.button_label | escape }}
                   </a>
@@ -277,10 +335,15 @@
         {
           "value": "full",
           "label": "Full screen"
+        },
+        {
+          "value": "image",
+          "label": "Fit to image/video (no crop)"
         }
       ],
       "default": "medium",
-      "label": "Section height"
+      "label": "Section height",
+      "info": "Select 'Fit to image/video' to match section height to media dimensions without cropping"
     },
     {
       "type": "header",
@@ -393,12 +456,6 @@
           "label": "Button link"
         },
         {
-          "type": "checkbox",
-          "id": "button_style_secondary",
-          "default": false,
-          "label": "Use outline button style"
-        },
-        {
           "type": "url",
           "id": "section_link",
           "label": "Slide link",
@@ -413,6 +470,12 @@
         {
           "type": "header",
           "content": "Image"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Add a video URL (mp4). Video takes priority over image if both are set."
         },
         {
           "type": "image_picker",
@@ -493,44 +556,20 @@
           "id": "content_position",
           "options": [
             {
-              "value": "top-left",
-              "label": "Top left"
+              "value": "top",
+              "label": "Top"
             },
             {
-              "value": "top-center",
-              "label": "Top center"
+              "value": "center",
+              "label": "Center"
             },
             {
-              "value": "top-right",
-              "label": "Top right"
-            },
-            {
-              "value": "middle-left",
-              "label": "Middle left"
-            },
-            {
-              "value": "middle-center",
-              "label": "Middle center"
-            },
-            {
-              "value": "middle-right",
-              "label": "Middle right"
-            },
-            {
-              "value": "bottom-left",
-              "label": "Bottom left"
-            },
-            {
-              "value": "bottom-center",
-              "label": "Bottom center"
-            },
-            {
-              "value": "bottom-right",
-              "label": "Bottom right"
+              "value": "bottom",
+              "label": "Bottom"
             }
           ],
-          "default": "middle-center",
-          "label": "Content position"
+          "default": "center",
+          "label": "Content position (Vertical)"
         },
         {
           "type": "select",
@@ -550,7 +589,7 @@
             }
           ],
           "default": "center",
-          "label": "Desktop content alignment"
+          "label": "Desktop text alignment (Horizontal)"
         },
         {
           "type": "select",
@@ -570,7 +609,7 @@
             }
           ],
           "default": "center",
-          "label": "Mobile content alignment"
+          "label": "Mobile text alignment (Horizontal)"
         },
         {
           "type": "select",

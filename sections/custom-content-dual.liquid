@@ -81,7 +81,7 @@
     {%- endif -%}
     {%- if section.settings.button_text_color_left != blank -%}
       color: {{ section.settings.button_text_color_left }};
-      border: 1px solid {{ section.settings.button_text_color_left }} !important;
+      border: 1px solid {{ section.settings.button_text_color_left }} ;
     {%- endif -%}
   }
 
@@ -109,7 +109,7 @@
     {%- endif -%}
     {%- if section.settings.button_text_color_right != blank -%}
       color: {{ section.settings.button_text_color_right }};
-      border: 1px solid {{ section.settings.button_text_color_right }} !important;
+      border: 1px solid {{ section.settings.button_text_color_right }} ;
     {%- endif -%}
   }
 
@@ -135,8 +135,37 @@
       min-height: 700px;
     {%- elsif section.settings.height == 'full' -%}
       min-height: 100vh;
+    {%- elsif section.settings.height == 'image' -%}
+      min-height: auto;
     {%- endif -%}
   }
+
+  {%- if section.settings.height == 'image' -%}
+    #CustomDual-{{ section.id }} .custom-dual__column {
+      height: auto;
+      min-height: auto;
+    }
+
+    #CustomDual-{{ section.id }} .custom-dual__media {
+      position: relative;
+      height: auto;
+    }
+
+    #CustomDual-{{ section.id }} .custom-dual__media img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      position: relative;
+    }
+
+    #CustomDual-{{ section.id }} .custom-dual__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -148,7 +177,7 @@
 
 <div
   id="CustomDual-{{ section.id }}"
-  class="custom-dual custom-dual--{{ section.settings.height }} custom-dual--layout-{{ section.settings.layout }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="custom-dual custom-dual--{{ section.settings.height }} custom-dual--layout-{{ section.settings.layout }}{% if section.settings.height == 'image' %} custom-dual--full-size{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
   <div class="custom-dual__container{% if section.settings.layout == 'stacked' %} custom-dual__container--stacked{% endif %}">
     <!-- Left Column -->
@@ -194,7 +223,7 @@
                 {% else %}
                   href="{{ section.settings.button_link_left }}"
                 {% endif %}
-                class="button{% if section.settings.button_style_secondary_left %} button--secondary{% else %} button--primary{% endif %}"
+                class="button button--primary"
               >
                 {{ section.settings.button_label_left | escape }}
               </a>
@@ -251,7 +280,7 @@
                 {% else %}
                   href="{{ section.settings.button_link_right }}"
                 {% endif %}
-                class="button{% if section.settings.button_style_secondary_right %} button--secondary{% else %} button--primary{% endif %}"
+                class="button button--primary"
               >
                 {{ section.settings.button_label_right | escape }}
               </a>
@@ -315,10 +344,15 @@
         {
           "value": "full",
           "label": "Full screen"
+        },
+        {
+          "value": "image",
+          "label": "Fit to image (no crop)"
         }
       ],
       "default": "medium",
-      "label": "Section height"
+      "label": "Section height",
+      "info": "Select 'Fit to image' to match section height to image dimensions without cropping"
     },
     {
       "type": "header",
@@ -397,12 +431,6 @@
       "label": "Button link"
     },
     {
-      "type": "checkbox",
-      "id": "button_style_secondary_left",
-      "default": false,
-      "label": "Use outline button style"
-    },
-    {
       "type": "url",
       "id": "section_link_left",
       "label": "Section link",
@@ -469,44 +497,20 @@
       "id": "content_position_left",
       "options": [
         {
-          "value": "top-left",
-          "label": "Top left"
+          "value": "top",
+          "label": "Top"
         },
         {
-          "value": "top-center",
-          "label": "Top center"
+          "value": "middle",
+          "label": "Middle"
         },
         {
-          "value": "top-right",
-          "label": "Top right"
-        },
-        {
-          "value": "middle-left",
-          "label": "Middle left"
-        },
-        {
-          "value": "middle-center",
-          "label": "Middle center"
-        },
-        {
-          "value": "middle-right",
-          "label": "Middle right"
-        },
-        {
-          "value": "bottom-left",
-          "label": "Bottom left"
-        },
-        {
-          "value": "bottom-center",
-          "label": "Bottom center"
-        },
-        {
-          "value": "bottom-right",
-          "label": "Bottom right"
+          "value": "bottom",
+          "label": "Bottom"
         }
       ],
-      "default": "middle-center",
-      "label": "Content position"
+      "default": "middle",
+      "label": "Content position (vertical)"
     },
     {
       "type": "select",
@@ -621,12 +625,6 @@
       "label": "Button link"
     },
     {
-      "type": "checkbox",
-      "id": "button_style_secondary_right",
-      "default": false,
-      "label": "Use outline button style"
-    },
-    {
       "type": "url",
       "id": "section_link_right",
       "label": "Section link",
@@ -693,44 +691,20 @@
       "id": "content_position_right",
       "options": [
         {
-          "value": "top-left",
-          "label": "Top left"
+          "value": "top",
+          "label": "Top"
         },
         {
-          "value": "top-center",
-          "label": "Top center"
+          "value": "middle",
+          "label": "Middle"
         },
         {
-          "value": "top-right",
-          "label": "Top right"
-        },
-        {
-          "value": "middle-left",
-          "label": "Middle left"
-        },
-        {
-          "value": "middle-center",
-          "label": "Middle center"
-        },
-        {
-          "value": "middle-right",
-          "label": "Middle right"
-        },
-        {
-          "value": "bottom-left",
-          "label": "Bottom left"
-        },
-        {
-          "value": "bottom-center",
-          "label": "Bottom center"
-        },
-        {
-          "value": "bottom-right",
-          "label": "Bottom right"
+          "value": "bottom",
+          "label": "Bottom"
         }
       ],
-      "default": "middle-center",
-      "label": "Content position"
+      "default": "middle",
+      "label": "Content position (vertical)"
     },
     {
       "type": "select",

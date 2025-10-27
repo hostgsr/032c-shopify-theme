@@ -91,6 +91,7 @@
 
 .card-information {
   text-align: var(--text-alignment);
+  line-height: 0!important;
 }
 
 .card__media,
@@ -126,9 +127,20 @@
   display: grid;
   grid-template-rows: minmax(0, 1fr) max-content minmax(0, 1fr);
   padding: 1rem;
+  overflow: hidden;
+  
   width: 100%;
   flex-grow: 1;
 }
+
+
+.card__information  h3 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
 
 .card__content--auto-margins {
   grid-template-rows: minmax(0, auto) max-content minmax(0, auto);
@@ -137,6 +149,18 @@
 .card__information {
   grid-row-start: 2;
   padding: 1.3rem 1rem;
+}
+
+.card__information a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 749px) {
+  .card__information a {
+    width: 180px;
+  }
 }
 
 .card:not(.ratio) > .card__content {
@@ -271,6 +295,7 @@
 }
 
 .card__badge {
+  display: none;
   align-self: flex-end;
   grid-row-start: 3;
   justify-self: flex-start;

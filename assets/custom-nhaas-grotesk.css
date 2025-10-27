@@ -33,7 +33,6 @@
 /* Global font application with 500 weight default */
 * {
   font-family: 'NHaas Grotesk' !important;
-  font-weight: 500 !important;
 }
 
 /* Ensure all text elements use the custom font */
@@ -43,5 +42,5 @@ p, span, div, a, li, td, th, label,
 button, input, textarea, select,
 .btn, .button {
   font-family: 'NHaas Grotesk' !important;
-  font-weight: 500 !important;
+  font-weight: 500 ;
 } 
