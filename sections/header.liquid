@@ -76,7 +76,7 @@
   }
 
   .header__second-row-menu {
-    padding: 1rem 0;
+    padding: 0rem 0;
   }
 
   .header__second-row-menu-nav {
@@ -100,7 +100,7 @@
   }
 
   .header__second-row-menu-nav .list-menu__item {
-    padding: 0.5rem 0;
+    padding: 0rem 0;
     flex-shrink: 0;
   }
 
@@ -111,6 +111,8 @@
   .header__third-row-menu {
     padding: 1rem 0;
   }
+  .second-row-menu{
+  padding: 0rem 0!important;}
 
   .header__third-row-menu-nav {
     display: flex;
@@ -391,8 +393,16 @@
     </div>
   </header>
 
-  {%- comment -%} Second row menu - for all collection pages {%- endcomment -%}
-  {%- if template.name == 'collection' -%}
+  {%- comment -%} Second row menu - for collection pages and lookbook pages {%- endcomment -%}
+  {%- liquid
+    assign show_second_row = false
+    if template.name == 'collection'
+      assign show_second_row = true
+    elsif template.name == 'page' and page and page.handle contains 'lookbook'
+      assign show_second_row = true
+    endif
+  -%}
+  {%- if show_second_row -%}
     {%- assign second_row_menu = linklists['2nd-row-menu'] -%}
     {%- if second_row_menu != blank and second_row_menu.links.size > 0 -%}
       <div class="header__second-row-menu page-width">
@@ -432,7 +442,7 @@
         assign menu_to_show = linklists['3rd-row-women']
       elsif collection.handle contains 'mens-' or collection.handle == 'mens-collection'
         assign menu_to_show = linklists['3rd-row-men']
-      elsif collection.handle == 'magazines'
+      elsif collection.handle == 'magazines' or collection.handle == 'posters'
         assign menu_to_show = linklists['3rd-row-print']
       endif
     -%}
@@ -463,6 +473,40 @@
           </ul>
         </nav>
       </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Third row menu - for lookbook pages {%- endcomment -%}
+  {%- if template.name == 'page' and page -%}
+    {%- if page.handle contains 'lookbook' -%}
+      {%- assign lookbook_menu = linklists['3rd-row-lookbook'] -%}
+      {%- if lookbook_menu != blank and lookbook_menu.links.size > 0 -%}
+        <div class="header__third-row-menu page-width">
+          <nav class="header__third-row-menu-nav">
+            <ul class="list-menu list-menu--inline" role="list">
+              {%- for link in lookbook_menu.links -%}
+                <li>
+                  <a
+                    href="{{ link.url }}"
+                    class="header__menu-item list-menu__item link link--text focus-inset"
+                    {% if link.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    <span
+                      {%- if link.current %}
+                        class="header__active-menu-item"
+                      {% endif %}
+                    >
+                      {{- link.title | escape -}}
+                    </span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+      {%- endif -%}
     {%- endif -%}
   {%- endif -%}
 </{{ header_tag }}>

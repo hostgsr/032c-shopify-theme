@@ -205,20 +205,25 @@
         <div class="custom-slide__content{% if block.settings.content_layout == 'between' %} custom-slide__content--layout-between{% endif %} section-{{ section.id }}-padding">
           <div class="w-full">
             <div class="custom-slide__text-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {%- if block.settings.content_layout == 'between' -%}
+                <div class="">
+              {%- endif -%}
               {%- if block.settings.heading != blank -%}
                 <h2 class="custom-slide__heading inline-richtext {{ block.settings.heading_size }}{% if block.settings.underline_heading %} custom-slide__heading--underlined{% endif %}">
                   {{ block.settings.heading }}
                 </h2>
               {%- endif -%}
-
-              {%- if block.settings.content_layout == 'between' -%}
-                <div class="custom-slide__text-content">
-              {%- endif -%}
-
               {%- if block.settings.text != blank -%}
                 <div class="custom-slide__text rte {{ block.settings.text_style }}">
                   {{ block.settings.text }}
                 </div>
+              {%- endif -%}
+              {%- if block.settings.content_layout == 'between' -%}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.content_layout == 'between' -%}
+                <div class="custom-slide__text-content">
               {%- endif -%}
 
               {%- if block.settings.button_label != blank -%}

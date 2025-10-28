@@ -125,47 +125,6 @@
       {%- endif -%}
     }
   {%- endif -%}
-
-  #CustomDual-{{ section.id }} {
-    {%- if section.settings.height == 'small' -%}
-      min-height: 300px;
-    {%- elsif section.settings.height == 'medium' -%}
-      min-height: 500px;
-    {%- elsif section.settings.height == 'large' -%}
-      min-height: 700px;
-    {%- elsif section.settings.height == 'full' -%}
-      min-height: 100vh;
-    {%- elsif section.settings.height == 'image' -%}
-      min-height: auto;
-    {%- endif -%}
-  }
-
-  {%- if section.settings.height == 'image' -%}
-    #CustomDual-{{ section.id }} .custom-dual__column {
-      height: auto;
-      min-height: auto;
-    }
-
-    #CustomDual-{{ section.id }} .custom-dual__media {
-      position: relative;
-      height: auto;
-    }
-
-    #CustomDual-{{ section.id }} .custom-dual__media img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      position: relative;
-    }
-
-    #CustomDual-{{ section.id }} .custom-dual__content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  {%- endif -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -177,9 +136,9 @@
 
 <div
   id="CustomDual-{{ section.id }}"
-  class="custom-dual custom-dual--{{ section.settings.height }} custom-dual--layout-{{ section.settings.layout }}{% if section.settings.height == 'image' %} custom-dual--full-size{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="custom-dual{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
-  <div class="custom-dual__container{% if section.settings.layout == 'stacked' %} custom-dual__container--stacked{% endif %}">
+  <div class="custom-dual__container">
     <!-- Left Column -->
     <div
       class="custom-dual__column custom-dual__column--left custom-dual__column--content-align-{{ section.settings.content_alignment_left }} custom-dual__column--content-position-{{ section.settings.content_position_left }}{% if section.settings.button_label_left == blank and section.settings.section_link_left != blank %} custom-dual__column--clickable{% endif %}"
@@ -305,55 +264,6 @@
     "groups": ["header", "footer"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "layout",
-      "options": [
-        {
-          "value": "side-by-side",
-          "label": "Side by side"
-        },
-        {
-          "value": "stacked",
-          "label": "Stacked on mobile"
-        }
-      ],
-      "default": "side-by-side",
-      "label": "Mobile layout"
-    },
-    {
-      "type": "select",
-      "id": "height",
-      "options": [
-        {
-          "value": "small",
-          "label": "Small"
-        },
-        {
-          "value": "medium",
-          "label": "Medium"
-        },
-        {
-          "value": "large",
-          "label": "Large"
-        },
-        {
-          "value": "full",
-          "label": "Full screen"
-        },
-        {
-          "value": "image",
-          "label": "Fit to image (no crop)"
-        }
-      ],
-      "default": "medium",
-      "label": "Section height",
-      "info": "Select 'Fit to image' to match section height to image dimensions without cropping"
-    },
     {
       "type": "header",
       "content": "Left Column - Content"

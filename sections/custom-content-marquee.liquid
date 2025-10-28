@@ -1,5 +1,245 @@
 {{ 'section-custom-content-marquee.css' | asset_url | stylesheet_tag }}
 
+<script>
+  (function () {
+    'use strict';
+
+    // Polyfill for performance.now()
+    if (!window.performance || !window.performance.now) {
+      window.performance = window.performance || {};
+      window.performance.now = function () {
+        return Date.now();
+      };
+    }
+
+    // Polyfill for requestAnimationFrame
+    (function () {
+      var lastTime = 0;
+      var vendors = ['webkit', 'moz'];
+      for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+        window.cancelAnimationFrame =
+          window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+      }
+
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = function (callback) {
+          var currTime = new Date().getTime();
+          var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+          var id = window.setTimeout(function () {
+            callback(currTime + timeToCall);
+          }, timeToCall);
+          lastTime = currTime + timeToCall;
+          return id;
+        };
+      }
+
+      if (!window.cancelAnimationFrame) {
+        window.cancelAnimationFrame = function (id) {
+          clearTimeout(id);
+        };
+      }
+    })();
+
+    class CustomMarquee extends HTMLElement {
+      constructor() {
+        super();
+        this.animationFrameId = null;
+        this.isPaused = false;
+        this.initialized = false;
+        this.retryCount = 0;
+      }
+
+      connectedCallback() {
+        // Multiple initialization attempts for mobile
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => this.init());
+        } else {
+          // Try immediately
+          this.init();
+        }
+
+        // Also try after a delay for mobile
+        setTimeout(() => {
+          if (!this.initialized) {
+            this.init();
+          }
+        }, 100);
+
+        // Final attempt after images/fonts load
+        if (window.addEventListener) {
+          window.addEventListener('load', () => {
+            if (!this.initialized) {
+              this.init();
+            }
+          });
+        }
+      }
+
+      disconnectedCallback() {
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId);
+        }
+      }
+
+      init() {
+        if (this.initialized) return;
+
+        const container = this.querySelector('.custom-marquee__container');
+        const track = this.querySelector('.custom-marquee__track');
+        const content = this.querySelector('.custom-marquee__content');
+
+        if (!container || !track || !content) {
+          if (this.retryCount < 5) {
+            this.retryCount++;
+            setTimeout(() => this.init(), 200);
+          }
+          return;
+        }
+
+        // Store original content before measuring
+        const originalContent = content.cloneNode(true);
+
+        // Get dimensions
+        const contentWidth = content.offsetWidth;
+        const containerWidth = container.offsetWidth;
+
+        if (contentWidth === 0 || containerWidth === 0) {
+          if (this.retryCount < 10) {
+            this.retryCount++;
+            setTimeout(() => this.init(), 200);
+          }
+          return;
+        }
+
+        // Mark as initialized
+        this.initialized = true;
+        this.setAttribute('data-marquee-initialized', 'true');
+        this.setAttribute('data-content-width', contentWidth);
+        this.setAttribute('data-container-width', containerWidth);
+
+        // Clone content multiple times for seamless loop
+        const clonesNeeded = Math.max(4, Math.ceil(containerWidth / contentWidth) + 3);
+
+        // Clear and rebuild
+        track.innerHTML = '';
+        for (let i = 0; i < clonesNeeded; i++) {
+          track.appendChild(originalContent.cloneNode(true));
+        }
+
+        // Force a reflow
+        void track.offsetWidth;
+
+        // Get settings
+        const direction = this.dataset.direction || 'left';
+        const speed = parseFloat(this.dataset.speed) || 30;
+        const pauseOnHover = this.dataset.pauseOnHover === 'true';
+
+        // Calculate speed (pixels per second)
+        const pixelsPerSecond = contentWidth / speed;
+
+        // Starting position
+        let position = direction === 'left' ? -contentWidth : 0;
+        let lastTime = performance.now();
+
+        const animate = () => {
+          if (!this.isPaused) {
+            const currentTime = performance.now();
+            const deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            if (direction === 'left') {
+              position += pixelsPerSecond * deltaTime;
+              if (position >= 0) {
+                position -= contentWidth;
+              }
+            } else {
+              position -= pixelsPerSecond * deltaTime;
+              if (position <= -contentWidth) {
+                position += contentWidth;
+              }
+            }
+
+            // Use both webkit and standard transform
+            track.style.webkitTransform = 'translate3d(' + position + 'px, 0, 0)';
+            track.style.transform = 'translate3d(' + position + 'px, 0, 0)';
+          }
+
+          this.animationFrameId = requestAnimationFrame(animate);
+        };
+
+        // Check for reduced motion
+        const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducedMotion) {
+          track.style.webkitTransform = 'translate3d(0, 0, 0)';
+          track.style.transform = 'translate3d(0, 0, 0)';
+          return;
+        }
+
+        // Start animation
+        this.animationFrameId = requestAnimationFrame(animate);
+
+        // Pause on hover if enabled (desktop only)
+        if (pauseOnHover && !('ontouchstart' in window)) {
+          this.addEventListener('mouseenter', () => {
+            this.isPaused = true;
+          });
+
+          this.addEventListener('mouseleave', () => {
+            this.isPaused = false;
+            lastTime = performance.now();
+          });
+        }
+
+        // Handle orientation change for mobile
+        const handleResize = () => {
+          if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+          }
+          this.initialized = false;
+          this.retryCount = 0;
+          setTimeout(() => this.init(), 100);
+        };
+
+        window.addEventListener('orientationchange', handleResize);
+        window.addEventListener('resize', handleResize);
+      }
+    }
+
+    // Define the custom element
+    if (typeof customElements !== 'undefined' && !customElements.get('custom-marquee')) {
+      customElements.define('custom-marquee', CustomMarquee);
+    } else {
+      // Fallback for browsers that don't support custom elements
+      console.warn('Custom elements not supported, using fallback initialization');
+
+      // Initialize all marquees on page load
+      function initAllMarquees() {
+        var marquees = document.querySelectorAll('custom-marquee, .custom-marquee');
+        for (var i = 0; i < marquees.length; i++) {
+          var element = marquees[i];
+          if (!element.hasAttribute('data-marquee-initialized')) {
+            try {
+              var marqueeInstance = new CustomMarquee();
+              marqueeInstance.init.call(element);
+            } catch (e) {
+              console.error('Failed to initialize marquee:', e);
+            }
+          }
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllMarquees);
+      } else {
+        initAllMarquees();
+      }
+
+      window.addEventListener('load', initAllMarquees);
+    }
+  })();
+</script>
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -27,33 +267,30 @@
       color: {{ section.settings.text_color }};
     }
   {%- endif -%}
-
-  #CustomMarquee-{{ section.id }} .custom-marquee__track {
-    animation-duration: {{ section.settings.animation_speed }}s;
-  }
 {%- endstyle -%}
 
-<div
+<custom-marquee
   id="CustomMarquee-{{ section.id }}"
-  class="custom-marquee custom-marquee--direction-{{ section.settings.direction }}{% unless section.settings.pause_on_hover %} custom-marquee--no-pause{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %} section-{{ section.id }}-padding"
+  class="custom-marquee section-{{ section.id }}-padding"
+  data-direction="{{ section.settings.direction }}"
+  data-speed="{{ section.settings.animation_speed }}"
+  data-pause-on-hover="{{ section.settings.pause_on_hover }}"
 >
   {%- if section.settings.text != blank -%}
     <div class="custom-marquee__container">
       <div class="custom-marquee__track">
         <div class="custom-marquee__content">
-          {%- for i in (1..10) -%}
+          {%- for i in (1..15) -%}
             <span class="custom-marquee__text {{ section.settings.text_size }}">
               {{- section.settings.text | escape -}}
             </span>
-            {%- unless forloop.last -%}
-              <span class="custom-marquee__separator">{{ section.settings.separator | default: '•' }}</span>
-            {%- endunless -%}
+            <span class="custom-marquee__separator">{{ section.settings.separator | default: '•' }}</span>
           {%- endfor -%}
         </div>
       </div>
     </div>
   {%- endif -%}
-</div>
+</custom-marquee>
 
 {% schema %}
 {

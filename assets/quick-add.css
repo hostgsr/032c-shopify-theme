@@ -617,17 +617,41 @@ quick-add-bulk .quantity__input {
   opacity: 0;
 }
 
-/* Hide title and price on hover to show sizes exactly over them */
-.product-card-wrapper:hover .card__heading,
-.product-card-wrapper:hover .price {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Hide title and price on hover to show sizes exactly over them (desktop only) */
+@media screen and (min-width: 750px) {
+  .product-card-wrapper:hover .card__heading,
+  .product-card-wrapper:hover .price {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 }
 
 /* Responsive adjustments */
 @media screen and (max-width: 749px) {
-  .card-information .quick-add-hover-overlay {
-    padding: 0.4rem;
+  /* Hide variant selector (sizes) on mobile - too complex for small screens */
+  .quick-add-hover-variants {
+    display: none !important;
+  }
+  
+  /* Make sure title and price stay visible on mobile */
+  .product-card-wrapper:hover .card__heading,
+  .product-card-wrapper:hover .price,
+  .product-card-wrapper:active .card__heading,
+  .product-card-wrapper:active .price {
+    opacity: 1 !important;
+  }
+  
+  /* Allow simple add to cart for single products on mobile */
+  .quick-add-hover-single {
+    display: flex;
+  }
+  
+  /* Smaller add to cart button on mobile */
+  .hover-add-to-cart-btn {
+    font-size: 0.9rem !important;
+    padding: 0.2rem 0.4rem !important;
+    min-width: auto !important;
+    min-height: auto !important;
   }
   
   .hover-variant-btn {
@@ -635,32 +659,10 @@ quick-add-bulk .quantity__input {
     font-size: 0.9rem;
     min-width: auto;
   }
-  
-  .hover-add-to-cart-btn {
-    font-size: 0.9rem;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: auto;
-    height: auto;
-    min-width: 0;
-    min-height: 0;
-  }
-  
-  /* On mobile, show overlay on tap/touch as well */
-  .product-card-wrapper:active .card-information .quick-add-hover-overlay {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  /* Hide title and price on mobile touch */
-  .product-card-wrapper:active .card__heading,
-  .product-card-wrapper:active .price {
-    opacity: 0;
-  }
 }
 
-/* Improve touch targets on mobile */
-@media (pointer: coarse) {
+/* Improve touch targets on tablets with touch (not needed on small mobile since overlay is disabled) */
+@media (pointer: coarse) and (min-width: 750px) {
   .hover-variant-btn {
     min-height: 44px;
     min-width: auto;

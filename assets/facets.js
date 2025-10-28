@@ -164,9 +164,16 @@ class FacetFiltersForm extends HTMLElement {
         FacetFiltersForm.renderMobileCounts(countsToRender, document.getElementById(closestJSFilterID));
 
         const newFacetDetailsElement = document.getElementById(closestJSFilterID);
-        const newElementSelector = newFacetDetailsElement.classList.contains('mobile-facets__details')
-          ? `.mobile-facets__close-button`
-          : `.facets__summary`;
+        let newElementSelector;
+        
+        if (newFacetDetailsElement.classList.contains('mobile-facets__details')) {
+          newElementSelector = `.mobile-facets__close-button`;
+        } else if (newFacetDetailsElement.classList.contains('facets-drawer-panel__filter')) {
+          newElementSelector = `.facets-drawer-panel__filter-title`;
+        } else {
+          newElementSelector = `.facets__summary`;
+        }
+        
         const newElementToActivate = newFacetDetailsElement.querySelector(newElementSelector);
 
         const isTextInput = event.target.getAttribute('type') === 'text';
@@ -197,9 +204,29 @@ class FacetFiltersForm extends HTMLElement {
     });
 
     document.getElementById('FacetFiltersFormMobile').closest('menu-drawer').bindEvents();
+    
+    // Reinitialize drawer listeners if they exist
+    if (typeof initFilterDrawer === 'function') {
+      initFilterDrawer();
+    }
+    
+    // Force open all mobile filter details after update
+    document.querySelectorAll('.mobile-facets__details').forEach(function(details) {
+      details.setAttribute('open', 'true');
+      details.open = true;
+    });
   }
 
   static renderCounts(source, target) {
+    // Handle drawer panel structure (no summary)
+    const targetTitle = target.querySelector('.facets-drawer-panel__filter-title');
+    const sourceTitle = source.querySelector('.facets-drawer-panel__filter-title');
+    
+    if (sourceTitle && targetTitle) {
+      targetTitle.outerHTML = sourceTitle.outerHTML;
+    }
+
+    // Handle traditional accordion structure
     const targetSummary = target.querySelector('.facets__summary');
     const sourceSummary = source.querySelector('.facets__summary');
 
@@ -298,6 +325,69 @@ FacetFiltersForm.searchParamsInitial = window.location.search.slice(1);
 FacetFiltersForm.searchParamsPrev = window.location.search.slice(1);
 customElements.define('facet-filters-form', FacetFiltersForm);
 FacetFiltersForm.setListeners();
+
+// Filter Drawer Functionality
+function initFilterDrawer() {
+  const toggleButton = document.querySelector('.facets-drawer-toggle__button');
+  const closeButton = document.querySelector('.facets-drawer-panel__close');
+  const overlay = document.querySelector('.facets-drawer-overlay');
+  const panel = document.querySelector('.facets-drawer-panel');
+
+  function openDrawer() {
+    if (panel && overlay) {
+      panel.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeDrawer() {
+    if (panel && overlay) {
+      panel.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Remove existing listeners to prevent duplicates
+  if (toggleButton) {
+    toggleButton.replaceWith(toggleButton.cloneNode(true));
+    const newToggleButton = document.querySelector('.facets-drawer-toggle__button');
+    newToggleButton.addEventListener('click', openDrawer);
+  }
+
+  if (closeButton) {
+    closeButton.replaceWith(closeButton.cloneNode(true));
+    const newCloseButton = document.querySelector('.facets-drawer-panel__close');
+    newCloseButton.addEventListener('click', closeDrawer);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', closeDrawer);
+  }
+
+  // Close on Escape key
+  const escapeHandler = function(e) {
+    if (e.key === 'Escape' && panel && panel.classList.contains('active')) {
+      closeDrawer();
+    }
+  };
+  
+  // Remove old listener if exists and add new one
+  document.removeEventListener('keydown', escapeHandler);
+  document.addEventListener('keydown', escapeHandler);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  initFilterDrawer();
+  
+  // Force open all mobile filter details
+  document.querySelectorAll('.mobile-facets__details').forEach(function(details) {
+    details.setAttribute('open', 'true');
+    details.open = true;
+  });
+});
 
 class PriceRange extends HTMLElement {
   constructor() {

@@ -170,6 +170,7 @@
 .custom-slide__heading {
   margin: 0 0 1rem 0;
   line-height: 1.2;
+  padding-bottom: 1rem;
 }
 
 .custom-slide__heading--underlined {

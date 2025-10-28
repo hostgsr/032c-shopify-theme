@@ -61,6 +61,8 @@ product-info {
 
   .product__info-wrapper {
     padding: 0 0 0 5rem;
+    display: flex;
+    justify-content: center;
   }
 
   .product__info-wrapper h2.h1{

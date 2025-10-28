@@ -14,6 +14,11 @@
   --grid-mobile-horizontal-spacing: 0px !important;
 }
 
+h2{
+  font-weight: 700!important;
+  line-height: 1.1!important;
+}
+
 /* Make card heading and price same size with no spacing */
 .card-information > * + * {
   margin-top: 0 !important;
@@ -160,6 +165,11 @@
 }
 
 /* base */
+
+
+h2{
+  font-weight: 700;
+}
 
 .page-width {
   max-width: 100%;

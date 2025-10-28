@@ -1,3 +1,5 @@
+/* Custom Dual Section - Simplified */
+
 .custom-dual {
   position: relative;
   width: 100%;
@@ -6,29 +8,49 @@
 .custom-dual__container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100%;
-  min-height: inherit;
+  gap: 0;
 }
 
 .custom-dual__column {
   position: relative;
   display: flex;
-  overflow: hidden;
+  min-height: 400px;
 }
 
+/* Media (images) */
 .custom-dual__media {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.custom-dual__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* When media exists, overlay content on top */
+.custom-dual__column:has(.custom-dual__media) {
+  min-height: 0; /* Let image determine height */
+}
+
+.custom-dual__media + .custom-dual__content {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 2;
 }
 
+/* Content */
 .custom-dual__content {
   position: relative;
   z-index: 2;
   width: 100%;
+  padding: 2rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,7 +60,7 @@
   width: 100%;
 }
 
-/* Content vertical positioning - only controls vertical alignment */
+/* Content vertical positioning */
 .custom-dual__column--content-position-top .custom-dual__content {
   align-items: flex-start;
 }
@@ -50,8 +72,6 @@
 .custom-dual__column--content-position-bottom .custom-dual__content {
   align-items: flex-end;
 }
-
-/* Horizontal positioning is handled by content-align classes below */
 
 /* Content horizontal alignment */
 .custom-dual__column--content-align-left .custom-dual__content {
@@ -66,11 +86,9 @@
   justify-content: flex-end;
 }
 
-/* Text alignment within content */
+/* Text alignment */
 .custom-dual__column--content-align-left .custom-dual__text-wrapper {
   text-align: left;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .custom-dual__column--content-align-center .custom-dual__text-wrapper {
@@ -79,21 +97,20 @@
 
 .custom-dual__column--content-align-right .custom-dual__text-wrapper {
   text-align: right;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
-/* Clickable section styles */
+/* Clickable section */
 .custom-dual__column--clickable {
   cursor: pointer;
 }
 
-/* Heading styles */
+/* Heading */
 .custom-dual__heading {
   line-height: 1.2;
+  margin-bottom: 1.6rem;
 }
 
-/* Dotted underline heading styles */
+/* Dotted underline heading */
 .custom-dual__heading--underlined {
   position: relative;
   display: inline-block;
@@ -115,43 +132,21 @@
   );
 }
 
-/* Ensure alignment for underlined headings */
-.custom-dual__column--content-align-left .custom-dual__heading--underlined::after {
-  left: 0;
-  right: auto;
-  width: 100%;
-}
-
-.custom-dual__column--content-align-center .custom-dual__heading--underlined {
-  text-align: center;
-}
-
-.custom-dual__column--content-align-center .custom-dual__heading--underlined::after {
-  left: 0;
-  right: 0;
-}
-
-.custom-dual__column--content-align-right .custom-dual__heading--underlined::after {
-  left: auto;
-  right: 0;
-  width: 100%;
-}
-
-/* Text styles */
+/* Text */
 .custom-dual__text {
-  margin-bottom: 1rem;
+  margin-bottom: 1.6rem;
+  line-height: 1.2;
 }
 
 .custom-dual__text p {
   margin-bottom: 1rem;
 }
 
-/* Button styles */
+/* Button */
 .custom-dual__button {
   margin-top: 1.6rem;
 }
 
-/* Essential button base styles */
 .custom-dual__button .button {
   display: inline-block;
   padding: 1rem 2rem;
@@ -174,161 +169,14 @@
 .custom-dual__button .button:hover {
   opacity: 1 !important;
   text-decoration: none;
-}
-
-.custom-dual__button .button:hover {
-
   border-color: currentColor;
 }
 
-
-
-/* Mobile responsive design */
-@media screen and (max-width: 749px) {
-  /* Only stack on mobile when stacked layout is selected */
-  .custom-dual__container--stacked {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-  }
-
-  /* 1:1 aspect ratio for images when stacked on mobile */
-  .custom-dual--layout-stacked .custom-dual__column {
-    aspect-ratio: 1 / 1;
-    min-height: auto;
-  }
-
-  .custom-dual--layout-stacked .custom-dual__media {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .custom-dual--layout-stacked .custom-dual__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Override for image height on mobile - no cropping */
-  .custom-dual--image.custom-dual--layout-stacked .custom-dual__column,
-  .custom-dual--full-size.custom-dual--layout-stacked .custom-dual__column {
-    aspect-ratio: auto;
-    height: auto;
-    min-height: auto;
-  }
-
-  .custom-dual--image .custom-dual__media,
-  .custom-dual--full-size .custom-dual__media {
-    position: relative;
-    height: auto;
-  }
-
-  .custom-dual--image .custom-dual__media img,
-  .custom-dual--full-size .custom-dual__media img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    position: relative;
-    display: block;
-  }
-
-  .custom-dual__text-wrapper {
-    max-width: none;
-    padding: 1.5rem;
-  }
-
-  .custom-dual__column--content-align-left .custom-dual__text-wrapper,
-  .custom-dual__column--content-align-right .custom-dual__text-wrapper {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .custom-dual__heading {
-    margin-top: 0;
-    margin-bottom: 1.2rem;
-  }
-
-  .custom-dual__text {
-    margin-bottom: 1.8rem;
-  }
-
-  .custom-dual__button {
-    margin-top: 1.8rem;
-  }
-}
-
-/* Responsive height adjustments */
-@media screen and (max-width: 749px) {
-  .custom-dual--small {
-    min-height: 500px; /* 250px per column */
-  }
-
-  .custom-dual--medium {
-    min-height: 800px; /* 400px per column */
-  }
-
-  .custom-dual--large {
-    min-height: 1000px; /* 500px per column */
-  }
-
-  .custom-dual--full {
-    min-height: 100vh;
-  }
-
-  /* No min-height for image layout on mobile */
-  .custom-dual--image {
-    min-height: auto !important;
-  }
-}
-
-
-/* Ensure proper stacking context */
-.custom-dual * {
-  position: relative;
-}
-
-.custom-dual__media img {
-  position: absolute;
-}
-
-/* Grid gap for better spacing */
-.custom-dual__container {
-  gap: 0;
-}
-
-/* Equal height columns */
-.custom-dual__column {
-  min-height: 100%;
-}
-
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  .custom-dual * {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
-}
-
-/* Remove any image/content scaling or zooming */
-.custom-dual__media img,
-.custom-dual__content,
-.custom-dual__text-wrapper,
-.custom-dual__column {
-  transform: none !important;
-  transition: none !important;
-} 
-
-/* Image behavior styles */
+/* Image behavior - stretch */
 .custom-dual__media--stretch {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
-  z-index: 0;
+  height: auto;
 }
 
 .custom-dual__media--stretch img {
@@ -337,27 +185,13 @@
   object-fit: cover;
 }
 
-/* Override stretch behavior for image height */
-.custom-dual--image .custom-dual__media--stretch,
-.custom-dual--full-size .custom-dual__media--stretch {
-  position: relative;
-  height: auto;
-}
-
-.custom-dual--image .custom-dual__media--stretch img,
-.custom-dual--full-size .custom-dual__media--stretch img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
+/* Image behavior - center */
 .custom-dual__media--center {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  z-index: 0;
 }
 
 .custom-dual__media--center img {
@@ -366,21 +200,7 @@
   object-fit: contain;
 }
 
-/* Override center behavior for image height */
-.custom-dual--image .custom-dual__media--center,
-.custom-dual--full-size .custom-dual__media--center {
-  padding: 0;
-}
-
-.custom-dual--image .custom-dual__media--center img,
-.custom-dual--full-size .custom-dual__media--center img {
-  max-width: 100%;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Content layout styles */
+/* Content layout - space between */
 .custom-dual__content--layout-between {
   display: flex;
   flex-direction: column;
@@ -403,7 +223,6 @@
 .custom-dual__content--layout-between .custom-dual__text-content {
   display: flex;
   flex-direction: column;
-  line-height: 1.4;
   margin-top: auto;
 }
 
@@ -416,44 +235,35 @@
   padding-top: 1.6rem;
 }
 
-/* Full size image layout - Fit to image height */
-.custom-dual--image,
-.custom-dual--full-size {
-  min-height: auto !important;
+/* Mobile - Stack columns */
+@media screen and (max-width: 749px) {
+  .custom-dual__container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .custom-dual__column {
+    min-height: 300px;
+  }
+
+  /* Reset for columns with images */
+  .custom-dual__column:has(.custom-dual__media) {
+    min-height: 0;
+  }
+
+  .custom-dual__content {
+    padding: 2rem 1.5rem;
+  }
+
+  .custom-dual__text-wrapper {
+    max-width: none;
+  }
 }
 
-.custom-dual--image .custom-dual__container,
-.custom-dual--full-size .custom-dual__container {
-  min-height: auto;
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .custom-dual * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
-
-.custom-dual--image .custom-dual__column,
-.custom-dual--full-size .custom-dual__column {
-  height: auto;
-  min-height: auto;
-}
-
-.custom-dual--image .custom-dual__media,
-.custom-dual--full-size .custom-dual__media {
-  position: relative;
-  height: auto;
-}
-
-.custom-dual--image .custom-dual__media img,
-.custom-dual--full-size .custom-dual__media img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  position: relative;
-  display: block;
-}
-
-.custom-dual--image .custom-dual__content,
-.custom-dual--full-size .custom-dual__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-} 

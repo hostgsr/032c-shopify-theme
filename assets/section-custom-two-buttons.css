@@ -1,0 +1,84 @@
+.two-buttons {
+  width: 100%;
+  overflow: visible;
+}
+
+.two-buttons__container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.two-buttons__wrapper {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.two-buttons__wrapper .two-buttons__button {
+  flex: 0 1 auto;
+}
+
+/* Alignment options */
+.two-buttons__container--left .two-buttons__wrapper {
+  justify-content: flex-start;
+}
+
+.two-buttons__container--center .two-buttons__wrapper {
+  justify-content: center;
+}
+
+.two-buttons__container--right .two-buttons__wrapper {
+  justify-content: flex-end;
+}
+
+/* Button styling */
+.two-buttons__button {
+  position: relative;
+}
+
+.two-buttons__button .button,
+.two-buttons__button a {
+  display: inline-block;
+  text-align: center;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000 !important;
+  background: transparent !important;
+  border: none !important;
+  text-decoration: underline dotted;
+}
+
+.two-buttons__button .button:hover,
+.two-buttons__button a:hover {
+  color: #ff0000 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 749px) {
+  .two-buttons__wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .two-buttons__button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .two-buttons__container {
+    padding: 0 5rem;
+  }
+}
+
